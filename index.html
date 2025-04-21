@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aquaheavenly| Construcción y Mantenimiento de Piscinas Premium</title>
-    <link rel="stylesheet" href="css/piscinas.css">
+    <title>Plantilla Base</title>
+    <link rel="stylesheet" href="css/mobile-menu.css">
     <link rel="stylesheet" href="css/styles.css">
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono&display=swap">
 </head>
@@ -36,22 +37,18 @@
     <header>
         <div class="container header-container">
             <a href="#" class="logo">
-                <span class="logo-icon"><i class="fas fa-water"></i></span>
-                <span class="text-gradient">Aquaheavenly</span>
+                <span class="logo-icon"><i class="fas fa-code"></i></span>
+                <span class="text-gradient">Mi Sitio</span>
             </a>
             
             <nav class="desktop-nav">
                 <a href="#home" class="active">Inicio</a>
-                <a href="#servicios">Servicios</a>
-                <a href="#proyectos">Proyectos</a>
-                <a href="#testimonios">Testimonios</a>
-                <a href="#cotizacion">Cotización</a>
-                <a href="#nosotros">Nosotros</a>
-                <a href="#cobertura">Cobertura</a>
-                <a href="#planes">Planes</a>
-                <a href="#contacto">Contacto</a>
-                <a href="#faq">FAQs</a>
+                <a href="#section1">Sección 1</a>
+                <a href="#section2">Sección 2</a>
+                <a href="#section3">Sección 3</a>
+                <a href="#contact">Contacto</a>
             </nav>
+
             <!-- Botón de configuración -->
             <div class="config-button" id="configButton">
                 <i class="fas fa-cog"></i>
@@ -76,10 +73,11 @@
                     </label>
                 </div>
                 
-                <a href="#" class="config-item">
+                <a href="#" id="downloadPdf" class="config-item">
                     <i class="fas fa-download"></i>
-                    <span>Catálogo PDF</span>
+                    <span>Descargar PDF</span>
                 </a>
+                
                 
                 <div class="config-item language-selector">
                     <i class="fas fa-globe"></i>
@@ -88,13 +86,14 @@
                         <option value="es">Español</option>
                         <option value="en">English</option>
                     </select>
+                    
                 </div>
                 
                 <div class="config-divider"></div>
                 
                 <div class="config-social">
-                    <a href="#" class="config-social-icon" title="Instagram">
-                        <i class="fab fa-instagram"></i>
+                    <a href="#" class="config-social-icon" title="GitHub">
+                        <i class="fab fa-github"></i>
                     </a>
                     <a href="#" class="config-social-icon" title="WhatsApp">
                         <i class="fab fa-whatsapp"></i>
@@ -102,13 +101,79 @@
                     <a href="#" class="config-social-icon" title="Facebook">
                         <i class="fab fa-facebook"></i>
                     </a>
-                    <a href="#" class="config-social-icon" title="YouTube">
-                        <i class="fab fa-youtube"></i>
+                    <a href="#" class="config-social-icon" title="LinkedIn">
+                        <i class="fab fa-linkedin"></i>
                     </a>
                 </div>
             </div>
         </div>
     </header>
+  <!-- Menú  móvil -->
+    <nav class="mobile-nav">
+        <a href="#home" class="nav-item active">
+            <i class="fas fa-home"></i>
+            <span>Inicio</span>
+        </a>
+        <a href="#section1" class="nav-item">
+            <i class="fas fa-star"></i>
+            <span>Sección 1</span>
+        </a>
+        <a href="#section2" class="nav-item">
+            <i class="fas fa-code"></i>
+            <span>Sección 2</span>
+        </a>
+        <a href="#section3" class="nav-item">
+            <i class="fas fa-briefcase"></i>
+            <span>Sección 3</span>
+        </a>
+        <div class="mobile-menu-button">
+            <i class="fas fa-ellipsis-h"></i>
+            <span>Más</span>
+        </div>
+    </nav>
+    
+    <!-- Menú expandido móvil -->
+    <div class="mobile-expanded-menu">
+        <div class="mobile-menu-header">
+            <h4>Menú</h4>
+        </div>
+        <div class="mobile-menu-items">
+            <a href="#contact" class="mobile-menu-item">
+                <i class="fas fa-envelope"></i>
+                <span>Contacto</span>
+            </a>
+            <!-- Más elementos de menú según necesites -->
+            <a href="#" class="mobile-menu-item">
+                <i class="fas fa-info-circle"></i>
+                <span>Acerca de</span>
+            </a>
+            <a href="#" class="mobile-menu-item">
+                <i class="fas fa-question-circle"></i>
+                <span>FAQs</span>
+            </a>
+            
+            <div class="mobile-menu-divider"></div>
+            
+            <div class="mobile-menu-footer">
+                <div class="mobile-menu-social">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+                
+                <div class="theme-toggle-wrapper">
+                    <label class="theme-switch">
+                        <input type="checkbox" id="mobileThemeToggle">
+                        <span class="theme-slider"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Overlay para el menú móvil -->
+    <div class="mobile-menu-overlay"></div>
 
     <!-- Main Content -->
     <main>
@@ -117,777 +182,40 @@
             <div class="hero-bg-shape-1"></div>
             <div class="hero-bg-shape-2"></div>
             <div class="container">
-                <div class="hero-content fade-in">
-                    <h1 class="text-center">Diseñamos tu piscina soñada con calidad y estilo</h1>
-                    <p class="text-center">Soluciones integrales en construcción, instalación y mantenimiento de piscinas para hogares, hoteles y espacios comerciales.</p>
-                    <div class="hero-cta text-center mt-8">
-                        <a href="#cotizacion" class="btn btn-primary"><i class="fas fa-calculator"></i> Solicitar cotización</a>
-                        <a href="https://wa.me/1234567890" target="_blank" class="btn btn-outline"><i class="fab fa-whatsapp"></i> WhatsApp</a>
-                    </div>
-                    
-                    <!-- Mini resumen de servicios -->
-                    <div class="mini-servicios mt-16">
-                        <div class="mini-servicios-grid">
-                            <div class="mini-servicio-card neu-shadow fade-in">
-                                <div class="mini-servicio-icon">
-                                    <i class="fas fa-swimming-pool"></i>
-                                </div>
-                                <h4>Construcción</h4>
-                            </div>
-                            <div class="mini-servicio-card neu-shadow fade-in">
-                                <div class="mini-servicio-icon">
-                                    <i class="fas fa-tools"></i>
-                                </div>
-                                <h4>Mantenimiento</h4>
-                            </div>
-                            <div class="mini-servicio-card neu-shadow fade-in">
-                                <div class="mini-servicio-icon">
-                                    <i class="fas fa-drafting-compass"></i>
-                                </div>
-                                <h4>Diseño 3D</h4>
-                            </div>
-                            <div class="mini-servicio-card neu-shadow fade-in">
-                                <div class="mini-servicio-icon">
-                                    <i class="fas fa-hammer"></i>
-                                </div>
-                                <h4>Reparación</h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <h1 class="text-center">Sección Principal</h1>
+                <p class="text-center">Contenido de ejemplo para la sección principal.</p>
             </div>
         </section>
 
-        <!-- Servicios Section -->
-        <section id="servicios" class="section">
+        <!-- Section 1 -->
+        <section id="section1" class="section">
             <div class="container">
-                <h2 class="text-center">Nuestros Servicios</h2>
-                <p class="text-center mb-12">Ofrecemos soluciones completas para tu piscina, desde el diseño hasta el mantenimiento.</p>
-                
-                <div class="servicios-grid">
-                    <!-- Servicio 1 -->
-                    <div class="servicio-card neu-shadow fade-in">
-                        <div class="servicio-icon">
-                            <i class="fas fa-swimming-pool"></i>
-                        </div>
-                        <div class="servicio-content">
-                            <h3>Construcción de Piscinas</h3>
-                            <p>Diseñamos y construimos piscinas a medida según las necesidades y espacio disponible de cada cliente.</p>
-                            <ul class="servicio-features">
-                                <li><i class="fas fa-check"></i> Asesoría personalizada</li>
-                                <li><i class="fas fa-check"></i> Materiales de primera calidad</li>
-                                <li><i class="fas fa-check"></i> Acabados perfectos</li>
-                            </ul>
-                            <a href="#cotizacion" class="btn btn-sm btn-primary">Solicitar información</a>
-                        </div>
-                    </div>
-                    
-                    <!-- Servicio 2 -->
-                    <div class="servicio-card neu-shadow fade-in">
-                        <div class="servicio-icon">
-                            <i class="fas fa-tools"></i>
-                        </div>
-                        <div class="servicio-content">
-                            <h3>Mantenimiento por Suscripción</h3>
-                            <p>Servicio profesional de mantenimiento periódico para mantener tu piscina en perfecto estado todo el año.</p>
-                            <ul class="servicio-features">
-                                <li><i class="fas fa-check"></i> Planes mensuales o anuales</li>
-                                <li><i class="fas fa-check"></i> Limpieza y tratamiento químico</li>
-                                <li><i class="fas fa-check"></i> Revisión de equipos</li>
-                            </ul>
-                            <a href="#cotizacion" class="btn btn-sm btn-primary">Ver planes</a>
-                        </div>
-                    </div>
-                    
-                    <!-- Servicio 3 -->
-                    <div class="servicio-card neu-shadow fade-in">
-                        <div class="servicio-icon">
-                            <i class="fas fa-drafting-compass"></i>
-                        </div>
-                        <div class="servicio-content">
-                            <h3>Diseño 3D y Planos</h3>
-                            <p>Visualiza tu proyecto antes de construirlo con nuestros servicios de diseño 3D y planos arquitectónicos.</p>
-                            <ul class="servicio-features">
-                                <li><i class="fas fa-check"></i> Renders fotorrealistas</li>
-                                <li><i class="fas fa-check"></i> Planos técnicos</li>
-                                <li><i class="fas fa-check"></i> Asesoría en materiales</li>
-                            </ul>
-                            <a href="#cotizacion" class="btn btn-sm btn-primary">Solicitar diseño</a>
-                        </div>
-                    </div>
-                    
-                    <!-- Servicio 4 -->
-                    <div class="servicio-card neu-shadow fade-in">
-                        <div class="servicio-icon">
-                            <i class="fas fa-hammer"></i>
-                        </div>
-                        <div class="servicio-content">
-                            <h3>Reparación y Renovación</h3>
-                            <p>Reparamos y renovamos piscinas antiguas o dañadas, devolviéndoles su belleza y funcionalidad.</p>
-                            <ul class="servicio-features">
-                                <li><i class="fas fa-check"></i> Diagnóstico profesional</li>
-                                <li><i class="fas fa-check"></i> Reparación de grietas y filtraciones</li>
-                                <li><i class="fas fa-check"></i> Cambio de revestimientos</li>
-                            </ul>
-                            <a href="#cotizacion" class="btn btn-sm btn-primary">Solicitar revisión</a>
-                        </div>
-                    </div>
-                </div>
+                <h2 class="text-center">Sección 1</h2>
+                <p class="text-center">Contenido de ejemplo para la sección 1.</p>
             </div>
         </section>
 
-        <!-- Proyectos / Galería -->
-        <section id="proyectos" class="section">
+        <!-- Section 2 -->
+        <section id="section2" class="section">
             <div class="container">
-                <h2 class="text-center">Nuestros Proyectos</h2>
-                <p class="text-center mb-8">Explora nuestra galería de trabajos realizados y descubre lo que podemos hacer por ti.</p>
-                
-                <div class="proyectos-filter-container mb-8 text-center">
-                    <button class="btn btn-sm btn-secondary proyecto-filter active" data-filter="todos">Todos</button>
-                    <button class="btn btn-sm btn-secondary proyecto-filter" data-filter="residencial">Residencial</button>
-                    <button class="btn btn-sm btn-secondary proyecto-filter" data-filter="comercial">Comercial</button>
-                    <button class="btn btn-sm btn-secondary proyecto-filter" data-filter="hoteles">Hoteles</button>
-                </div>
-                
-                <div class="proyectos-grid">
-                    <!-- Proyecto 1 -->
-                    <div class="proyecto-card neu-shadow fade-in" data-category="residencial">
-                        <div class="proyecto-images">
-                            <div class="proyecto-antes-despues">
-                                <div class="proyecto-imagen proyecto-antes"></div>
-                                <div class="proyecto-imagen proyecto-despues"></div>
-                                <div class="proyecto-slider-handle">
-                                    <i class="fas fa-exchange-alt"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="proyecto-details">
-                            <span class="proyecto-tag">Residencial</span>
-                            <h3>Piscina Familiar Moderna</h3>
-                            <p class="proyecto-location"><i class="fas fa-map-marker-alt"></i> La Molina, Lima</p>
-                            <a href="#" class="btn btn-sm btn-outline" onclick="openModal('proyecto1Modal')">Ver detalles</a>
-                        </div>
-                    </div>
-                    
-                    <!-- Proyecto 2 -->
-                    <div class="proyecto-card neu-shadow fade-in" data-category="hoteles">
-                        <div class="proyecto-images">
-                            <div class="proyecto-antes-despues">
-                                <div class="proyecto-imagen proyecto-antes"></div>
-                                <div class="proyecto-imagen proyecto-despues"></div>
-                                <div class="proyecto-slider-handle">
-                                    <i class="fas fa-exchange-alt"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="proyecto-details">
-                            <span class="proyecto-tag">Hotel</span>
-                            <h3>Piscina Infinity Resort</h3>
-                            <p class="proyecto-location"><i class="fas fa-map-marker-alt"></i> Miraflores, Lima</p>
-                            <a href="#" class="btn btn-sm btn-outline" onclick="openModal('proyecto2Modal')">Ver detalles</a>
-                        </div>
-                    </div>
-                    
-                    <!-- Proyecto 3 -->
-                    <div class="proyecto-card neu-shadow fade-in" data-category="comercial">
-                        <div class="proyecto-images">
-                            <div class="proyecto-antes-despues">
-                                <div class="proyecto-imagen proyecto-antes"></div>
-                                <div class="proyecto-imagen proyecto-despues"></div>
-                                <div class="proyecto-slider-handle">
-                                    <i class="fas fa-exchange-alt"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="proyecto-details">
-                            <span class="proyecto-tag">Comercial</span>
-                            <h3>Club Deportivo Acuático</h3>
-                            <p class="proyecto-location"><i class="fas fa-map-marker-alt"></i> San Isidro, Lima</p>
-                            <a href="#" class="btn btn-sm btn-outline" onclick="openModal('proyecto3Modal')">Ver detalles</a>
-                        </div>
-                    </div>
-                    
-                    <!-- Proyecto 4 -->
-                    <div class="proyecto-card neu-shadow fade-in" data-category="residencial">
-                        <div class="proyecto-images">
-                            <div class="proyecto-antes-despues">
-                                <div class="proyecto-imagen proyecto-antes"></div>
-                                <div class="proyecto-imagen proyecto-despues"></div>
-                                <div class="proyecto-slider-handle">
-                                    <i class="fas fa-exchange-alt"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="proyecto-details">
-                            <span class="proyecto-tag">Residencial</span>
-                            <h3>Renovación Piscina Villa</h3>
-                            <p class="proyecto-location"><i class="fas fa-map-marker-alt"></i> Surco, Lima</p>
-                            <a href="#" class="btn btn-sm btn-outline" onclick="openModal('proyecto4Modal')">Ver detalles</a>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="text-center mt-10">
-                    <a href="#" class="btn btn-primary" onclick="openModal('galeriaCompleta')">Ver galería completa</a>
-                </div>
+                <h2 class="text-center">Sección 2</h2>
+                <p class="text-center">Contenido de ejemplo para la sección 2.</p>
             </div>
         </section>
 
-        <!-- Testimonios Section -->
-        <section id="testimonios" class="section">
+        <!-- Section 3 -->
+        <section id="section3" class="section">
             <div class="container">
-                <h2 class="text-center">Testimonios</h2>
-                <p class="text-center mb-12">Lo que nuestros clientes dicen sobre nosotros.</p>
-                
-                <div class="testimonios-slider fade-in">
-                    <!-- Testimonio 1 -->
-                    <div class="testimonio-card neu-shadow">
-                        <div class="testimonio-header">
-                            <div class="testimonio-avatar"></div>
-                            <div class="testimonio-info">
-                                <h4>Carlos Mendoza</h4>
-                                <div class="testimonio-stars">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="testimonio-body">
-                            <p>"Increíble servicio desde el diseño hasta la entrega. Nuestra piscina quedó exactamente como la imaginamos. El mantenimiento mensual es muy profesional y puntual."</p>
-                        </div>
-                        <div class="testimonio-footer">
-                            <span class="testimonio-project">Piscina Residencial</span>
-                        </div>
-                    </div>
-                    
-                    <!-- Testimonio 2 -->
-                    <div class="testimonio-card neu-shadow">
-                        <div class="testimonio-header">
-                            <div class="testimonio-avatar"></div>
-                            <div class="testimonio-info">
-                                <h4>María Rodríguez</h4>
-                                <div class="testimonio-stars">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="testimonio-body">
-                            <p>"Renovaron nuestra antigua piscina y quedó como nueva. Muy satisfecha con la calidad del trabajo y la atención personalizada. Ahora tenemos un plan de mantenimiento anual."</p>
-                        </div>
-                        <div class="testimonio-footer">
-                            <span class="testimonio-project">Renovación</span>
-                        </div>
-                    </div>
-                    
-                    <!-- Testimonio 3 -->
-                    <div class="testimonio-card neu-shadow">
-                        <div class="testimonio-header">
-                            <div class="testimonio-avatar"></div>
-                            <div class="testimonio-info">
-                                <h4>Hotel Miramar</h4>
-                                <div class="testimonio-stars">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star-half-alt"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="testimonio-body">
-                            <p>"Como gerente del hotel, puedo decir que la construcción de nuestra piscina infinity superó nuestras expectativas. Los huéspedes la adoran y el mantenimiento es impecable."</p>
-                        </div>
-                        <div class="testimonio-footer">
-                            <span class="testimonio-project">Piscina Comercial</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="testimonios-dots text-center mt-8">
-                    <span class="testimonio-dot active"></span>
-                    <span class="testimonio-dot"></span>
-                    <span class="testimonio-dot"></span>
-                </div>
+                <h2 class="text-center">Sección 3</h2>
+                <p class="text-center">Contenido de ejemplo para la sección 3.</p>
             </div>
         </section>
 
-        <!-- Cotización / Agendar visita -->
-        <section id="cotizacion" class="section">
-            <div class="container">
-                <h2 class="text-center">Solicita tu Cotización</h2>
-                <p class="text-center mb-12">Completa el formulario y nos pondremos en contacto contigo para ofrecerte la mejor solución para tu piscina.</p>
-                
-                <div class="cotizacion-container fade-in">
-                    <div class="cotizacion-info">
-                        <div class="cotizacion-feature">
-                            <div class="cotizacion-feature-icon">
-                                <i class="fas fa-check-circle"></i>
-                            </div>
-                            <div class="cotizacion-feature-content">
-                                <h4>Visita técnica sin costo</h4>
-                                <p>Evaluamos tu espacio y te asesoramos sin compromiso</p>
-                            </div>
-                        </div>
-                        <div class="cotizacion-feature">
-                            <div class="cotizacion-feature-icon">
-                                <i class="fas fa-check-circle"></i>
-                            </div>
-                            <div class="cotizacion-feature-content">
-                                <h4>Presupuesto detallado</h4>
-                                <p>Desglosamos todos los costos para mayor transparencia</p>
-                            </div>
-                        </div>
-                        <div class="cotizacion-feature">
-                            <div class="cotizacion-feature-icon">
-                                <i class="fas fa-check-circle"></i>
-                            </div>
-                            <div class="cotizacion-feature-content">
-                                <h4>Planes de financiamiento</h4>
-                                <p>Opciones flexibles adaptadas a tu presupuesto</p>
-                            </div>
-                        </div>
-                        <div class="cotizacion-contacto">
-                            <a href="https://wa.me/1234567890" class="btn btn-primary btn-whatsapp"><i class="fab fa-whatsapp"></i> Cotiza por WhatsApp</a>
-                            <p>O llámanos: <a href="tel:+511234567"><i class="fas fa-phone-alt"></i> (51) 123-4567</a></p>
-                        </div>
-                    </div>
-                    
-                    <div class="cotizacion-form neu-shadow">
-                        <form id="cotizacionForm">
-                            <div class="form-group">
-                                <label for="nombre">Nombre completo*</label>
-                                <input type="text" id="nombre" name="nombre" class="form-control" required>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="email">Correo electrónico*</label>
-                                <input type="email" id="email" name="email" class="form-control" required>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="telefono">Teléfono*</label>
-                                <input type="tel" id="telefono" name="telefono" class="form-control" required>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="direccion">Dirección</label>
-                                <input type="text" id="direccion" name="direccion" class="form-control">
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="tipoServicio">Tipo de servicio*</label>
-                                <select id="tipoServicio" name="tipoServicio" class="form-control" required>
-                                    <option value="">Selecciona una opción</option>
-                                    <option value="construccion">Construcción de piscina</option>
-                                    <option value="mantenimiento">Plan de mantenimiento</option>
-                                    <option value="reparacion">Reparación</option>
-                                    <option value="diseno">Diseño 3D / Planos</option>
-                                </select>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="tamano">Tamaño aproximado (m²)</label>
-                                <input type="number" id="tamano" name="tamano" class="form-control">
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="mensaje">Mensaje adicional</label>
-                                <textarea id="mensaje" name="mensaje" class="form-control" rows="3"></textarea>
-                            </div>
-                            
-                            <div class="form-check mb-4">
-                                <input type="checkbox" id="terminos" name="terminos" class="form-check-input" required>
-                                <label for="terminos" class="form-check-label">Acepto la política de privacidad y términos de servicio</label>
-                            </div>
-                            
-                            <button type="submit" class="btn btn-primary btn-block">Enviar solicitud</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Nosotros / La Empresa -->
-        <section id="nosotros" class="section">
-            <div class="container">
-                <h2 class="text-center">Sobre Nosotros</h2>
-                <p class="text-center mb-12">Conoce más sobre nuestra empresa y por qué somos tu mejor opción.</p>
-                
-                <div class="nosotros-grid fade-in">
-                    <div class="nosotros-imagen neu-shadow">
-                        <!-- Imagen del equipo o instalaciones -->
-                    </div>
-                    
-                    <div class="nosotros-content">
-                        <h3>Más de 15 años de experiencia</h3>
-                        <p>Somos una empresa especializada en el diseño, construcción y mantenimiento de piscinas con más de 15 años de experiencia en el mercado. Nuestro compromiso es ofrecer soluciones de alta calidad que superen las expectativas de nuestros clientes.</p>
-                        
-                        <div class="nosotros-stats">
-                            <div class="nosotros-stat">
-                                <span class="nosotros-stat-value">400+</span>
-                                <span class="nosotros-stat-label">Proyectos Entregados</span>
-                            </div>
-                            <div class="nosotros-stat">
-                                <span class="nosotros-stat-value">98%</span>
-                                <span class="nosotros-stat-label">Clientes Satisfechos</span>
-                            </div>
-                            <div class="nosotros-stat">
-                                <span class="nosotros-stat-value">15+</span>
-                                <span class="nosotros-stat-label">Años de Experiencia</span>
-                            </div>
-                        </div>
-                        
-                        <h4>¿Por qué elegirnos?</h4>
-                        <ul class="nosotros-features">
-                            <li><i class="fas fa-check-circle"></i> Profesionales certificados</li>
-                            <li><i class="fas fa-check-circle"></i> Materiales de primera calidad</li>
-                            <li><i class="fas fa-check-circle"></i> Garantía en todos nuestros servicios</li>
-                            <li><i class="fas fa-check-circle"></i> Atención personalizada</li>
-                            <li><i class="fas fa-check-circle"></i> Servicio post-venta</li>
-                        </ul>
-                        
-                        <a href="#cotizacion" class="btn btn-primary mt-6">¡Contáctanos hoy!</a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Zonas de Cobertura / Ubicación -->
-        <section id="cobertura" class="section">
-            <div class="container">
-                <h2 class="text-center">Zonas de Cobertura</h2>
-                <p class="text-center mb-12">Brindamos servicios en las siguientes áreas.</p>
-                
-                <div class="cobertura-container fade-in">
-                    <div class="cobertura-mapa neu-shadow">
-                        <!-- Mapa de cobertura -->
-                    </div>
-                    
-                    <div class="cobertura-list">
-                        <h3>Atendemos en:</h3>
-                        <div class="cobertura-areas">
-                            <div class="cobertura-area">
-                                <h4><i class="fas fa-map-marker-alt"></i> Lima Centro</h4>
-                                <ul>
-                                    <li>Miraflores</li>
-                                    <li>San Isidro</li>
-                                    <li>San Borja</li>
-                                    <li>Surco</li>
-                                    <li>La Molina</li>
-                                </ul>
-                            </div>
-                            <div class="cobertura-area">
-                                <h4><i class="fas fa-map-marker-alt"></i> Lima Norte</h4>
-                                <ul>
-                                    <li>Los Olivos</li>
-                                    <li>San Martín de Porres</li>
-                                    <li>Independencia</li>
-                                    <li>Comas</li>
-                                </ul>
-                            </div>
-                            <div class="cobertura-area">
-                                <h4><i class="fas fa-map-marker-alt"></i> Lima Sur</h4>
-                                <ul>
-                                    <li>Chorrillos</li>
-                                    <li>Villa El Salvador</li>
-                                    <li>San Juan de Miraflores</li>
-                                    <li>Villa María del Triunfo</li>
-                                </ul>
-                            </div>
-                            <div class="cobertura-area">
-                                <h4><i class="fas fa-map-marker-alt"></i> Balnearios</h4>
-                                <ul>
-                                    <li>Asia</li>
-                                    <li>Santa María</li>
-                                    <li>Punta Hermosa</li>
-                                    <li>Ancón</li>
-                                </ul>
-                            </div>
-                        </div>
-                        <p class="mt-4">¿No ves tu zona? ¡Contáctanos! Podemos coordinar servicios en otras localidades.</p>
-                        <a href="#contacto" class="btn btn-outline mt-4">Consultar disponibilidad</a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Planes de Suscripción de Mantenimiento -->
-        <section id="planes" class="section">
-            <div class="container">
-                <h2 class="text-center">Planes de Mantenimiento</h2>
-                <p class="text-center mb-12">Suscríbete a nuestros planes de mantenimiento y mantén tu piscina en perfectas condiciones todo el año.</p>
-                
-                <div class="planes-grid fade-in">
-                    <!-- Plan Básico -->
-                    <div class="plan-card neu-shadow">
-                        <div class="plan-header">
-                            <h3>Plan Básico</h3>
-                            <div class="plan-price">
-                                <span class="plan-currency">$</span>
-                                <span class="plan-amount">99</span>
-                                <span class="plan-period">/mes</span>
-                            </div>
-                        </div>
-                        <div class="plan-body">
-                            <ul class="plan-features">
-                                <li><i class="fas fa-check"></i> Limpieza general 1 vez al mes</li>
-                                <li><i class="fas fa-check"></i> Análisis químico del agua</li>
-                                <li><i class="fas fa-check"></i> Ajuste de niveles de pH y cloro</li>
-                                <li><i class="fas fa-check"></i> Limpieza de skimmers y filtros</li>
-                                <li class="plan-feature-inactive"><i class="fas fa-times"></i> Limpieza de equipos de bombeo</li>
-                                <li class="plan-feature-inactive"><i class="fas fa-times"></i> Tratamientos especiales</li>
-                                <li class="plan-feature-inactive"><i class="fas fa-times"></i> Atención de emergencias</li>
-                            </ul>
-                        </div>
-                        <div class="plan-footer">
-                            <a href="#cotizacion" class="btn btn-outline btn-block">Seleccionar</a>
-                        </div>
-                    </div>
-                    
-                    <!-- Plan Estándar -->
-                    <div class="plan-card neu-shadow plan-destacado">
-                        <div class="plan-tag">Más popular</div>
-                        <div class="plan-header">
-                            <h3>Plan Estándar</h3>
-                            <div class="plan-price">
-                                <span class="plan-currency">$</span>
-                                <span class="plan-amount">179</span>
-                                <span class="plan-period">/mes</span>
-                            </div>
-                        </div>
-                        <div class="plan-body">
-                            <ul class="plan-features">
-                                <li><i class="fas fa-check"></i> Limpieza general 2 veces al mes</li>
-                                <li><i class="fas fa-check"></i> Análisis químico del agua</li>
-                                <li><i class="fas fa-check"></i> Ajuste de niveles de pH y cloro</li>
-                                <li><i class="fas fa-check"></i> Limpieza de skimmers y filtros</li>
-                                <li><i class="fas fa-check"></i> Limpieza de equipos de bombeo</li>
-                                <li><i class="fas fa-check"></i> Tratamientos básicos contra algas</li>
-                                <li class="plan-feature-inactive"><i class="fas fa-times"></i> Atención de emergencias</li>
-                            </ul>
-                        </div>
-                        <div class="plan-footer">
-                            <a href="#cotizacion" class="btn btn-primary btn-block">Seleccionar</a>
-                        </div>
-                    </div>
-                    
-                    <!-- Plan Premium -->
-                    <div class="plan-card neu-shadow">
-                        <div class="plan-header">
-                            <h3>Plan Premium</h3>
-                            <div class="plan-price">
-                                <span class="plan-currency">$</span>
-                                <span class="plan-amount">299</span>
-                                <span class="plan-period">/mes</span>
-                            </div>
-                        </div>
-                        <div class="plan-body">
-                            <ul class="plan-features">
-                                <li><i class="fas fa-check"></i> Limpieza general semanal</li>
-                                <li><i class="fas fa-check"></i> Análisis químico del agua</li>
-                                <li><i class="fas fa-check"></i> Ajuste de niveles de pH y cloro</li>
-                                <li><i class="fas fa-check"></i> Limpieza de skimmers y filtros</li>
-                                <li><i class="fas fa-check"></i> Limpieza de equipos de bombeo</li>
-                                <li><i class="fas fa-check"></i> Tratamientos especiales completos</li>
-                                <li><i class="fas fa-check"></i> Atención de emergencias 24/7</li>
-                            </ul>
-                        </div>
-                        <div class="plan-footer">
-                            <a href="#cotizacion" class="btn btn-outline btn-block">Seleccionar</a>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="planes-notas text-center mt-10">
-                    <p>Todos los planes incluyen productos químicos básicos. Consulta por nuestros descuentos en planes anuales.</p>
-                    <a href="#" class="btn btn-secondary mt-4" onclick="openModal('planesDetalles')">Ver detalles completos de planes</a>
-                </div>
-            </div>
-        </section>
-
-        <!-- Contacto Section -->
-        <section id="contacto" class="section">
+        <!-- Contact Section -->
+        <section id="contact" class="section">
             <div class="container">
                 <h2 class="text-center">Contacto</h2>
-                <p class="text-center mb-12">Ponte en contacto con nosotros por cualquiera de estos medios.</p>
-                
-                <div class="contacto-grid fade-in">
-                    <div class="contacto-info">
-                        <div class="contacto-item">
-                            <div class="contacto-icon">
-                                <i class="fab fa-whatsapp"></i>
-                            </div>
-                            <div class="contacto-content">
-                                <h4>WhatsApp</h4>
-                                <p>Atención inmediata</p>
-                                <a href="https://wa.me/1234567890" class="contacto-link">+51 123 456 789</a>
-                            </div>
-                        </div>
-                        
-                        <div class="contacto-item">
-                            <div class="contacto-icon">
-                                <i class="fas fa-phone-alt"></i>
-                            </div>
-                            <div class="contacto-content">
-                                <h4>Teléfono</h4>
-                                <p>Lunes a Sábado 9am - 6pm</p>
-                                <a href="tel:+511234567" class="contacto-link">(51) 123-4567</a>
-                            </div>
-                        </div>
-                        
-                        <div class="contacto-item">
-                            <div class="contacto-icon">
-                                <i class="fas fa-envelope"></i>
-                            </div>
-                            <div class="contacto-content">
-                                <h4>Email</h4>
-                                <p>Respondemos en 24 horas</p>
-                                <a href="mailto:info@tudominio.com" class="contacto-link">info@tudominio.com</a>
-                            </div>
-                        </div>
-                        
-                        <div class="contacto-item">
-                            <div class="contacto-icon">
-                                <i class="fas fa-map-marker-alt"></i>
-                            </div>
-                            <div class="contacto-content">
-                                <h4>Dirección</h4>
-                                <p>Oficina central</p>
-                                <address class="contacto-link">Av. Principal 123, Lima, Perú</address>
-                            </div>
-                        </div>
-                        
-                        <div class="contacto-redes">
-                            <h4>Síguenos en redes</h4>
-                            <div class="contacto-redes-icons">
-                                <a href="#" class="social-icon">
-                                    <i class="fab fa-facebook-f"></i>
-                                </a>
-                                <a href="#" class="social-icon">
-                                    <i class="fab fa-instagram"></i>
-                                </a>
-                                <a href="#" class="social-icon">
-                                    <i class="fab fa-youtube"></i>
-                                </a>
-                                <a href="#" class="social-icon">
-                                    <i class="fab fa-tiktok"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="contacto-mapa neu-shadow">
-                        <!-- Aquí iría el iframe del mapa -->
-                        <div class="mapa-placeholder">
-                            <i class="fas fa-map-marked-alt"></i>
-                            <p>Mapa de ubicación</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="contacto-horario mt-12 text-center">
-                    <h3>Horario de atención</h3>
-                    <div class="horario-grid">
-                        <div class="horario-item">
-                            <div class="horario-dia">Lunes - Viernes</div>
-                            <div class="horario-horas">9:00 AM - 6:00 PM</div>
-                        </div>
-                        <div class="horario-item">
-                            <div class="horario-dia">Sábados</div>
-                            <div class="horario-horas">9:00 AM - 2:00 PM</div>
-                        </div>
-                        <div class="horario-item">
-                            <div class="horario-dia">Domingos</div>
-                            <div class="horario-horas">Cerrado</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- FAQ Section -->
-        <section id="faq" class="section">
-            <div class="container">
-                <h2 class="text-center">Preguntas Frecuentes</h2>
-                <p class="text-center mb-12">Resolvemos tus dudas sobre nuestros servicios.</p>
-                
-                <div class="faq-container fade-in">
-                    <div class="faq-item neu-shadow">
-                        <div class="faq-question">
-                            <h4>¿Cuánto tiempo toma construir una piscina?</h4>
-                            <span class="faq-toggle"><i class="fas fa-plus"></i></span>
-                        </div>
-                        <div class="faq-answer">
-                            <p>El tiempo promedio para construir una piscina residencial estándar es de 4 a 8 semanas, dependiendo del tamaño, tipo de piscina y complejidad del proyecto. Durante la consulta inicial, podremos darte un cronograma más preciso basado en tus necesidades específicas.</p>
-                        </div>
-                    </div>
-                    
-                    <div class="faq-item neu-shadow">
-                        <div class="faq-question">
-                            <h4>¿Qué incluye el servicio de mantenimiento?</h4>
-                            <span class="faq-toggle"><i class="fas fa-plus"></i></span>
-                        </div>
-                        <div class="faq-answer">
-                            <p>Nuestros servicios de mantenimiento varían según el plan seleccionado, pero generalmente incluyen: limpieza de filtros, análisis y tratamiento químico del agua, limpieza de skimmers, aspirado de la piscina, cepillado de paredes y revisión de equipos. Los planes Premium incluyen también tratamientos especializados y atención de emergencias.</p>
-                        </div>
-                    </div>
-                    
-                    <div class="faq-item neu-shadow">
-                        <div class="faq-question">
-                            <h4>¿Ofrecen garantía en sus servicios?</h4>
-                            <span class="faq-toggle"><i class="fas fa-plus"></i></span>
-                        </div>
-                        <div class="faq-answer">
-                            <p>Sí, todos nuestros servicios cuentan con garantía. Para construcciones nuevas, ofrecemos garantía estructural de 10 años y garantía en equipos según el fabricante (generalmente 1-3 años). Para servicios de reparación, la garantía es de 6 meses a 1 año dependiendo del tipo de trabajo realizado.</p>
-                        </div>
-                    </div>
-                    
-                    <div class="faq-item neu-shadow">
-                        <div class="faq-question">
-                            <h4>¿Cuál es el costo promedio de una piscina?</h4>
-                            <span class="faq-toggle"><i class="fas fa-plus"></i></span>
-                        </div>
-                        <div class="faq-answer">
-                            <p>El costo de una piscina varía significativamente dependiendo del tamaño, materiales, acabados y características adicionales. Como referencia, una piscina residencial básica puede iniciar desde $15,000, mientras que piscinas más grandes o con características premium pueden superar los $50,000. Te recomendamos solicitar una cotización personalizada para obtener un presupuesto preciso.</p>
-                        </div>
-                    </div>
-                    
-                    <div class="faq-item neu-shadow">
-                        <div class="faq-question">
-                            <h4>¿Puedo cambiar de plan de mantenimiento?</h4>
-                            <span class="faq-toggle"><i class="fas fa-plus"></i></span>
-                        </div>
-                        <div class="faq-answer">
-                            <p>Sí, puedes cambiar tu plan de mantenimiento en cualquier momento con previo aviso de 15 días. Si tienes un contrato anual, el cambio se aplicará al siguiente ciclo de facturación. Contáctanos para más detalles sobre cómo actualizar o modificar tu plan actual.</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="faq-more text-center mt-10">
-                    <p>¿No encuentras la respuesta que buscas?</p>
-                    <a href="#contacto" class="btn btn-primary mt-4">Contáctanos directamente</a>
-                </div>
-            </div>
-        </section>
-
-        <!-- Llamado a la acción final -->
-        <section id="cta" class="section cta-section">
-            <div class="container">
-                <div class="cta-container neu-shadow fade-in">
-                    <h2>¿Listo para transformar tu espacio?</h2>
-                    <p>Desde el diseño inicial hasta el mantenimiento continuo, estamos aquí para hacer realidad tu piscina soñada.</p>
-                    <div class="cta-buttons">
-                        <a href="#cotizacion" class="btn btn-primary">Solicitar cotización</a>
-                        <a href="https://wa.me/1234567890" class="btn btn-outline"><i class="fab fa-whatsapp"></i> WhatsApp directo</a>
-                    </div>
-                </div>
+                <p class="text-center">Contenido de ejemplo para la sección de contacto.</p>
             </div>
         </section>
     </main>
@@ -896,20 +224,20 @@
     <footer>
         <div class="container footer-container">
             <div>
-                <a href="#" class="footer-logo text-gradient">Aquaheavenly</a>
-                <p>Especialistas en diseño, construcción y mantenimiento de piscinas premium. Más de 15 años creando espacios acuáticos de ensueño.</p>
+                <a href="#" class="footer-logo text-gradient">Mi Sitio</a>
+                <p>Descripción breve del sitio web.</p>
                 <div class="footer-social">
                     <a href="#" class="social-icon">
-                        <i class="fab fa-facebook-f"></i>
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="#" class="social-icon">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                    <a href="#" class="social-icon">
+                        <i class="fab fa-twitter"></i>
                     </a>
                     <a href="#" class="social-icon">
                         <i class="fab fa-instagram"></i>
-                    </a>
-                    <a href="#" class="social-icon">
-                        <i class="fab fa-youtube"></i>
-                    </a>
-                    <a href="#" class="social-icon">
-                        <i class="fab fa-tiktok"></i>
                     </a>
                 </div>
             </div>
@@ -918,122 +246,42 @@
                 <h3 class="footer-heading">Enlaces rápidos</h3>
                 <ul class="footer-links">
                     <li><a href="#home"><i class="fas fa-chevron-right"></i> Inicio</a></li>
-                    <li><a href="#servicios"><i class="fas fa-chevron-right"></i> Servicios</a></li>
-                    <li><a href="#proyectos"><i class="fas fa-chevron-right"></i> Proyectos</a></li>
-                    <li><a href="#planes"><i class="fas fa-chevron-right"></i> Planes de mantenimiento</a></li>
-                    <li><a href="#nosotros"><i class="fas fa-chevron-right"></i> Sobre nosotros</a></li>
-                    <li><a href="#contacto"><i class="fas fa-chevron-right"></i> Contacto</a></li>
+                    <li><a href="#section1"><i class="fas fa-chevron-right"></i> Sección 1</a></li>
+                    <li><a href="#section2"><i class="fas fa-chevron-right"></i> Sección 2</a></li>
+                    <li><a href="#section3"><i class="fas fa-chevron-right"></i> Sección 3</a></li>
+                    <li><a href="#contact"><i class="fas fa-chevron-right"></i> Contacto</a></li>
                 </ul>
             </div>
             
             <div>
                 <h3 class="footer-heading">Servicios</h3>
                 <ul class="footer-links">
-                    <li><a href="#servicios"><i class="fas fa-chevron-right"></i> Construcción de piscinas</a></li>
-                    <li><a href="#servicios"><i class="fas fa-chevron-right"></i> Mantenimiento regular</a></li>
-                    <li><a href="#servicios"><i class="fas fa-chevron-right"></i> Diseño 3D y planos</a></li>
-                    <li><a href="#servicios"><i class="fas fa-chevron-right"></i> Reparación y renovación</a></li>
-                    <li><a href="#servicios"><i class="fas fa-chevron-right"></i> Equipamiento e instalación</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Servicio 1</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Servicio 2</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Servicio 3</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Servicio 4</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Servicio 5</a></li>
                 </ul>
             </div>
             
             <div>
-                <h3 class="footer-heading">Contáctanos</h3>
+                <h3 class="footer-heading">Contáctame</h3>
                 <ul class="footer-links">
-                    <li><a href="mailto:info@tudominio.com"><i class="fas fa-envelope"></i> info@tudominio.com</a></li>
-                    <li><a href="tel:+511234567"><i class="fas fa-phone-alt"></i> (51) 123-4567</a></li>
-                    <li><a href="https://wa.me/1234567890"><i class="fab fa-whatsapp"></i> +51 123 456 789</a></li>
-                    <li><a href="#"><i class="fas fa-map-marker-alt"></i> Av. Principal 123, Lima, Perú</a></li>
+                    <li><a href="mailto:email@ejemplo.com"><i class="fas fa-envelope"></i> email@ejemplo.com</a></li>
+                    <li><a href="tel:+123456789"><i class="fas fa-phone-alt"></i> +12 345 6789</a></li>
+                    <li><a href="#"><i class="fas fa-map-marker-alt"></i> Ciudad, País</a></li>
                 </ul>
             </div>
         </div>
         
         <div class="footer-bottom">
             <div class="container">
-                <p>&copy; 2025 Aquaheavenly| Diseño y Construcción de Piscinas. Todos los derechos reservados.</p>
+                <p>&copy; 2025 Mi Sitio. Todos los derechos reservados.</p>
             </div>
         </div>
     </footer>
-<!-- Mobile Navigation -->
-<!-- Mobile Navigation con navegación lógica -->
-<nav class="mobile-nav">
-    <a href="#home" class="nav-item active">
-        <i class="fas fa-home"></i>
-        <span>Inicio</span>
-    </a>
-    <a href="#servicios" class="nav-item">
-        <i class="fas fa-toolbox"></i>
-        <span>Servicios</span>
-    </a>
-    <a href="#proyectos" class="nav-item">
-        <i class="fas fa-images"></i>
-        <span>Proyectos</span>
-    </a>
-    <a href="#cotizacion" class="nav-item">
-        <i class="fas fa-calculator"></i>
-        <span>Cotizar</span>
-    </a>
-    <div class="mobile-menu-button">
-        <i class="fas fa-ellipsis-h"></i>
-        <span>Más</span>
-    </div>
-</nav>
-
-<!-- Mobile Expanded Menu con orden lógico -->
-<div class="mobile-expanded-menu">
-    <div class="mobile-menu-header">
-        <h4>Menú</h4>
-    </div>
-    <div class="mobile-menu-items">
-        <a href="#testimonios" class="mobile-menu-item">
-            <i class="fas fa-star"></i>
-            <span>Testimonios</span>
-        </a>
-        <a href="#nosotros" class="mobile-menu-item">
-            <i class="fas fa-users"></i>
-            <span>Nosotros</span>
-        </a>
-        <a href="#cobertura" class="mobile-menu-item">
-            <i class="fas fa-map-marked-alt"></i>
-            <span>Cobertura</span>
-        </a>
-        <a href="#planes" class="mobile-menu-item">
-            <i class="fas fa-tasks"></i>
-            <span>Planes</span>
-        </a>
-        <a href="#contacto" class="mobile-menu-item">
-            <i class="fas fa-phone-alt"></i>
-            <span>Contacto</span>
-        </a>
-        <a href="#faq" class="mobile-menu-item">
-            <i class="fas fa-question-circle"></i>
-            <span>FAQs</span>
-        </a>
-        
-        <div class="mobile-menu-divider"></div>
-        
-        <div class="mobile-menu-footer">
-            <div class="mobile-menu-social">
-                <a href="#"><i class="fab fa-facebook-f"></i></a>
-                <a href="#"><i class="fab fa-instagram"></i></a>
-                <a href="#"><i class="fab fa-whatsapp"></i></a>
-                <a href="#"><i class="fab fa-youtube"></i></a>
-            </div>
-            
-            <div class="theme-toggle-wrapper">
-                <label class="theme-switch">
-                    <input type="checkbox" id="mobileThemeToggle">
-                    <span class="theme-slider"></span>
-                </label>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Overlay para menú móvil -->
-<div class="mobile-menu-overlay"></div>
+    <script src="js/mobile-menu.js"></script>
     <script src="js/script.js"></script>
-    <script src="js/piscinas.js"></script>
-    <script src="js/security.js"></script>
+    
 </body>
 </html>
