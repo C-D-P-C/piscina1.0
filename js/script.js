@@ -1,5 +1,9 @@
 // Preloader
 window.addEventListener('load', () => {
+    showNotification('success', '¡Bienvenido!', 'Gracias por visitar nuestra plataforma.');
+    
+    
+
     const preloader = document.querySelector('.preloader');
     setTimeout(() => {
         preloader.classList.add('hide');
@@ -23,30 +27,28 @@ document.documentElement.style.setProperty('--bg-dark-rgb', '15, 23, 42');
 
 const body = document.body;
 const themeToggleCheckbox = document.getElementById('themeToggleCheckbox');
+const themeLabel = document.querySelector('.theme-toggle-wrapper span');
 
-// Inicializar estado del checkbox según tema actual
-if (localStorage.getItem('theme') === 'dark') {
-    body.setAttribute('data-theme', 'dark');
-    themeToggleCheckbox.checked = true;
-} else {
-    body.setAttribute('data-theme', 'light');
-    themeToggleCheckbox.checked = false;
+// Detectar o aplicar el tema inicial
+let storedTheme = localStorage.getItem('theme');
+if (!storedTheme) {
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    storedTheme = prefersDark ? 'dark' : 'light';
+    localStorage.setItem('theme', storedTheme);
 }
 
-// Detectar preferencia del sistema en la primera visita
-if (!localStorage.getItem('theme')) {
-    const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+body.setAttribute('data-theme', storedTheme);
+themeToggleCheckbox.checked = storedTheme === 'dark';
 
-    if (prefersDarkScheme.matches) {
-        body.setAttribute('data-theme', 'dark');
-        localStorage.setItem('theme', 'dark');
-        themeToggleCheckbox.checked = true;
-    } else {
-        body.setAttribute('data-theme', 'light');
-        localStorage.setItem('theme', 'light');
-        themeToggleCheckbox.checked = false;
-    }
+// Asignar el texto correcto para la acción (lo que haría el botón)
+if (themeLabel) {
+    themeLabel.textContent = storedTheme === 'dark' ? 'Modo oscuro' : 'Modo claro';
 }
+
+
+
+
+
 
 // Smooth scrolling para navegación
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -145,16 +147,23 @@ window.addEventListener('scroll', () => {
     }
 });
 
-// Toggle del tema desde el menú de configuración
+
 themeToggleCheckbox.addEventListener('change', () => {
-    if (themeToggleCheckbox.checked) {
-        body.setAttribute('data-theme', 'dark');
-        localStorage.setItem('theme', 'dark');
-    } else {
-        body.setAttribute('data-theme', 'light');
-        localStorage.setItem('theme', 'light');
+    const mode = themeToggleCheckbox.checked ? 'dark' : 'light';
+    body.setAttribute('data-theme', mode);
+    localStorage.setItem('theme', mode);
+    showNotification('success', 'Modo cambiado', `Modo ${mode === 'dark' ? 'oscuro' : 'claro'} activado.`);
+
+    if (themeLabel) {
+        themeLabel.textContent = mode === 'dark' ? 'Modo oscuro' : 'Modo claro';
     }
+    
 });
+
+
+
+
+
 
 // Menú de configuración
 const configButton = document.getElementById('configButton');
@@ -492,70 +501,13 @@ function demoTemplateFeatures() {
 
 
 
-// Funciones para el menú móvil expandido
-function initMobileExpandedMenu() {
-    const menuButton = document.querySelector('.mobile-menu-button');
-    const expandedMenu = document.querySelector('.mobile-expanded-menu');
-    const overlay = document.querySelector('.mobile-menu-overlay');
-    
-    if (!menuButton || !expandedMenu || !overlay) return;
-    
-    menuButton.addEventListener('click', () => {
-        expandedMenu.classList.toggle('open');
-        menuButton.classList.toggle('active');
-        overlay.classList.toggle('active');
-        document.body.style.overflow = expandedMenu.classList.contains('open') ? 'hidden' : '';
-    });
-    
-    overlay.addEventListener('click', () => {
-        expandedMenu.classList.remove('open');
-        menuButton.classList.remove('active');
-        overlay.classList.remove('active');
-        document.body.style.overflow = '';
-    });
-    
-    // Cerrar menú al hacer click en un elemento
-    document.querySelectorAll('.mobile-menu-item').forEach(item => {
-        item.addEventListener('click', () => {
-            expandedMenu.classList.remove('open');
-            menuButton.classList.remove('active');
-            overlay.classList.remove('active');
-            document.body.style.overflow = '';
-        });
-    });
-}
-
-// Añadir a las funciones iniciales
-document.addEventListener('DOMContentLoaded', () => {
-    // Otras inicializaciones
-    
-    // Inicializar menú móvil expandido
-    initMobileExpandedMenu();
+document.getElementById('downloadPdf').addEventListener('click', e => {
+    e.preventDefault();
+    showNotification('success', 'Descarga', 'Tu archivo PDF se está generando...');
 });
 
-// Sincronizar toggle de tema móvil
-const mobileThemeToggle = document.getElementById('mobileThemeToggle');
-if (mobileThemeToggle) {
-    // Inicializar estado según tema actual
-    mobileThemeToggle.checked = body.getAttribute('data-theme') === 'dark';
-    
-    // Sincronizar cambios
-    mobileThemeToggle.addEventListener('change', () => {
-        if (mobileThemeToggle.checked) {
-            body.setAttribute('data-theme', 'dark');
-            localStorage.setItem('theme', 'dark');
-            if (themeToggleCheckbox) themeToggleCheckbox.checked = true;
-        } else {
-            body.setAttribute('data-theme', 'light');
-            localStorage.setItem('theme', 'light');
-            if (themeToggleCheckbox) themeToggleCheckbox.checked = false;
-        }
-    });
-    
-    // Sincronizar cuando cambia el toggle principal
-    if (themeToggleCheckbox) {
-        themeToggleCheckbox.addEventListener('change', () => {
-            mobileThemeToggle.checked = themeToggleCheckbox.checked;
-        });
-    }
-}
+document.getElementById('languageSelect').addEventListener('change', e => {
+    const lang = e.target.value;
+    showNotification('success', 'Idioma cambiado', `Has cambiado el idioma a ${lang === 'es' ? 'Español' : 'Inglés'}.`);
+});
+
