@@ -1,287 +1,651 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Plantilla Base</title>
-    <link rel="stylesheet" href="css/mobile-menu.css">
-    <link rel="stylesheet" href="css/styles.css">
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono&display=swap">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Checklist de Tomas - Bangkok</title>
+  <style>
+    :root {
+      --bg-color: #111827;
+      --card-bg: #1e293b;
+      --primary-color: #3b82f6;
+      --primary-gradient: linear-gradient(135deg, #38bdf8, #6366f1);
+      --secondary-color: #facc15;
+      --done-color: #059669;
+      --done-gradient: linear-gradient(135deg, #047857, #10b981);
+      --text-color: #f8fafc;
+      --shadow-color: rgba(0, 0, 0, 0.5);
+      --highlight-color: rgba(255, 255, 255, 0.05);
+      --border-radius: 12px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--bg-color);
+      color: var(--text-color);
+      min-height: 100vh;
+      padding: 1.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 2rem;
+      padding: 1.5rem;
+      border-radius: var(--border-radius);
+      background: var(--card-bg);
+      box-shadow: 
+        8px 8px 16px var(--shadow-color),
+        -8px -8px 16px var(--highlight-color);
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      background: var(--primary-gradient);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      position: relative;
+      display: inline-block;
+    }
+
+    .section {
+      margin-bottom: 1.5rem;
+      padding: 1.5rem;
+      border-radius: var(--border-radius);
+      background: var(--card-bg);
+      box-shadow: 
+        8px 8px 16px var(--shadow-color),
+        -8px -8px 16px var(--highlight-color);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .section:hover {
+      transform: translateY(-5px);
+      box-shadow: 
+        10px 10px 20px var(--shadow-color),
+        -10px -10px 20px var(--highlight-color);
+    }
+
+    .section h2 {
+      color: var(--secondary-color);
+      margin-bottom: 1rem;
+      font-size: 1.5rem;
+      position: relative;
+      padding-bottom: 0.5rem;
+    }
+
+    .section h2::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      height: 3px;
+      width: 50px;
+      background: var(--primary-gradient);
+      border-radius: 3px;
+    }
+
+    .section-info {
+      margin-bottom: 1rem;
+      padding: 0.75rem;
+      border-radius: var(--border-radius);
+      background-color: rgba(30, 41, 59, 0.7);
+      font-size: 0.9rem;
+    }
+
+    .info-item {
+      margin-bottom: 0.5rem;
+    }
+
+    .info-item strong {
+      color: #9ca3af;
+      margin-right: 0.5rem;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    li {
+      margin: 0.75rem 0;
+      background-color: rgba(30, 41, 59, 0.7);
+      padding: 1rem;
+      border-radius: var(--border-radius);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.3s ease;
+      box-shadow: 
+        inset 4px 4px 8px var(--shadow-color),
+        inset -4px -4px 8px var(--highlight-color);
+    }
+
+    li span {
+      flex: 1;
+      padding-right: 1rem;
+    }
+
+    li.done {
+      background: var(--done-gradient);
+      text-decoration: line-through;
+      opacity: 0.8;
+    }
+
+    .buttons-container {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    button {
+      padding: 0.5rem 1rem;
+      border: none;
+      background: var(--primary-gradient);
+      color: var(--text-color);
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      box-shadow: 
+        4px 4px 8px var(--shadow-color),
+        -4px -4px 8px var(--highlight-color);
+      min-width: 100px;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 
+        6px 6px 12px var(--shadow-color),
+        -6px -6px 12px var(--highlight-color);
+    }
+
+    button:active {
+      transform: translateY(1px);
+      box-shadow: 
+        2px 2px 4px var(--shadow-color),
+        -2px -2px 4px var(--highlight-color);
+    }
+
+    .progress-container {
+      width: 100%;
+      height: 10px;
+      background-color: rgba(30, 41, 59, 0.7);
+      border-radius: 5px;
+      margin: 1rem 0;
+      overflow: hidden;
+      box-shadow: 
+        inset 2px 2px 4px var(--shadow-color),
+        inset -2px -2px 4px var(--highlight-color);
+    }
+
+    .progress-bar {
+      height: 100%;
+      border-radius: 5px;
+      background: var(--primary-gradient);
+      transition: width 0.3s ease;
+    }
+
+    .stats {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+
+    .stat-item {
+      text-align: center;
+      flex: 1;
+      padding: 0.5rem;
+      background-color: rgba(30, 41, 59, 0.7);
+      border-radius: var(--border-radius);
+      margin: 0 0.5rem;
+      box-shadow: 
+        4px 4px 8px var(--shadow-color),
+        -4px -4px 8px var(--highlight-color);
+    }
+
+    .stat-number {
+      font-size: 1.5rem;
+      font-weight: bold;
+      background: var(--primary-gradient);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .stat-label {
+      font-size: 0.8rem;
+      opacity: 0.8;
+    }
+
+    .maps-button {
+      background: linear-gradient(135deg, #4285f4, #34a853);
+      display: flex;
+      align-items: center;
+      padding: 0.5rem 1rem;
+    }
+
+    .maps-button i {
+      margin-right: 0.5rem;
+    }
+
+    @media (max-width: 768px) {
+      .section h2 {
+        font-size: 1.3rem;
+      }
+      
+      li {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      
+      li span {
+        margin-bottom: 0.75rem;
+        padding-right: 0;
+      }
+      
+      .buttons-container {
+        width: 100%;
+        justify-content: space-between;
+      }
+      
+      button {
+        flex: 1;
+      }
+      
+      .stats {
+        flex-direction: column;
+      }
+      
+      .stat-item {
+        margin: 0.5rem 0;
+      }
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 1rem;
+      }
+      
+      .section {
+        padding: 1rem;
+      }
+      
+      h1 {
+        font-size: 1.5rem;
+      }
+    }
+
+    /* Modo completado */
+    li.done button.toggle-btn {
+      background: var(--done-gradient);
+    }
+  </style>
+  <!-- Añadir FontAwesome para iconos -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
-<body data-theme="light">
-    <!-- Preloader -->
-    <div class="preloader">
-        <div class="loader"></div>
-    </div>
-
-    <!-- Scroll Indicator -->
-    <div class="scroll-indicator"></div>
-
-    <!-- Theme Toggle -->
-    <div class="theme-toggle" id="themeToggle" aria-label="Cambiar tema">
-        <i class="fas fa-moon"></i>
-        <i class="fas fa-sun"></i>
-    </div>
-
-    <!-- Scroll to Top Button -->
-    <div class="scroll-top" id="scrollTop">
-        <i class="fas fa-arrow-up"></i>
-    </div>
-
-    <!-- Background Gradient Mesh -->
-    <div class="bg-gradient-mesh"></div>
-
-    <!-- Header -->
+<body>
+  <div class="container">
     <header>
-        <div class="container header-container">
-            <a href="#" class="logo">
-                <span class="logo-icon"><i class="fas fa-code"></i></span>
-                <span class="text-gradient">Mi Sitio</span>
-            </a>
-            
-            <nav class="desktop-nav">
-                <a href="#home" class="active">Inicio</a>
-                <a href="#section1">Sección 1</a>
-                <a href="#section2">Sección 2</a>
-                <a href="#section3">Sección 3</a>
-                <a href="#contact">Contacto</a>
-            </nav>
-
-            <!-- Botón de configuración -->
-            <div class="config-button" id="configButton">
-                <i class="fas fa-cog"></i>
-            </div>
+      <h1>Checklist de Tomas - Bangkok Urban Art</h1>
+      <div class="progress-container">
+        <div id="progress-bar" class="progress-bar" style="width: 0%"></div>
+      </div>
+      <div class="stats">
+        <div class="stat-item">
+          <div id="completed-count" class="stat-number">0</div>
+          <div class="stat-label">Completadas</div>
         </div>
-
-        <!-- Menú de configuración desplegable -->
-        <div class="config-menu" id="configMenu">
-            <div class="config-menu-header">
-                <h4>Configuración</h4>
-                <button class="config-close" id="closeConfigMenu">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            
-            <div class="config-menu-items">
-                <div class="config-item theme-toggle-wrapper">
-                    <span>Modo oscuro</span>
-                    <label class="theme-switch">
-                        <input type="checkbox" id="themeToggleCheckbox">
-                        <span class="theme-slider"></span>
-                    </label>
-                </div>
-                
-                <a href="#" id="downloadPdf" class="config-item">
-                    <i class="fas fa-download"></i>
-                    <span>Descargar PDF</span>
-                </a>
-                
-                
-                <div class="config-item language-selector">
-                    <i class="fas fa-globe"></i>
-                    <span>Idioma</span>
-                    <select id="languageSelect">
-                        <option value="es">Español</option>
-                        <option value="en">English</option>
-                    </select>
-                    
-                </div>
-                
-                <div class="config-divider"></div>
-                
-                <div class="config-social">
-                    <a href="#" class="config-social-icon" title="GitHub">
-                        <i class="fab fa-github"></i>
-                    </a>
-                    <a href="#" class="config-social-icon" title="WhatsApp">
-                        <i class="fab fa-whatsapp"></i>
-                    </a>
-                    <a href="#" class="config-social-icon" title="Facebook">
-                        <i class="fab fa-facebook"></i>
-                    </a>
-                    <a href="#" class="config-social-icon" title="LinkedIn">
-                        <i class="fab fa-linkedin"></i>
-                    </a>
-                </div>
-            </div>
+        <div class="stat-item">
+          <div id="total-count" class="stat-number">0</div>
+          <div class="stat-label">Total</div>
         </div>
+        <div class="stat-item">
+          <div id="completion-percentage" class="stat-number">0%</div>
+          <div class="stat-label">Porcentaje</div>
+        </div>
+      </div>
     </header>
-  <!-- Menú  móvil -->
-    <nav class="mobile-nav">
-        <a href="#home" class="nav-item active">
-            <i class="fas fa-home"></i>
-            <span>Inicio</span>
-        </a>
-        <a href="#section1" class="nav-item">
-            <i class="fas fa-star"></i>
-            <span>Sección 1</span>
-        </a>
-        <a href="#section2" class="nav-item">
-            <i class="fas fa-code"></i>
-            <span>Sección 2</span>
-        </a>
-        <a href="#section3" class="nav-item">
-            <i class="fas fa-briefcase"></i>
-            <span>Sección 3</span>
-        </a>
-        <div class="mobile-menu-button">
-            <i class="fas fa-ellipsis-h"></i>
-            <span>Más</span>
-        </div>
-    </nav>
-    
-    <!-- Menú expandido móvil -->
-    <div class="mobile-expanded-menu">
-        <div class="mobile-menu-header">
-            <h4>Menú</h4>
-        </div>
-        <div class="mobile-menu-items">
-            <a href="#contact" class="mobile-menu-item">
-                <i class="fas fa-envelope"></i>
-                <span>Contacto</span>
-            </a>
-            <!-- Más elementos de menú según necesites -->
-            <a href="#" class="mobile-menu-item">
-                <i class="fas fa-info-circle"></i>
-                <span>Acerca de</span>
-            </a>
-            <a href="#" class="mobile-menu-item">
-                <i class="fas fa-question-circle"></i>
-                <span>FAQs</span>
-            </a>
-            
-            <div class="mobile-menu-divider"></div>
-            
-            <div class="mobile-menu-footer">
-                <div class="mobile-menu-social">
-                    <a href="#"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                </div>
-                
-                <div class="theme-toggle-wrapper">
-                    <label class="theme-switch">
-                        <input type="checkbox" id="mobileThemeToggle">
-                        <span class="theme-slider"></span>
-                    </label>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Overlay para el menú móvil -->
-    <div class="mobile-menu-overlay"></div>
 
-    <!-- Main Content -->
-    <main>
-        <!-- Hero Section -->
-        <section id="home" class="section">
-            <div class="hero-bg-shape-1"></div>
-            <div class="hero-bg-shape-2"></div>
-            <div class="container">
-                <h1 class="text-center">Sección Principal</h1>
-                <p class="text-center">Contenido de ejemplo para la sección principal.</p>
-            </div>
-        </section>
+    <div id="checklist-container"></div>
+  </div>
 
-        <!-- Section 1 -->
-        <section id="section1" class="section">
-            <div class="container">
-                <h2 class="text-center">Sección 1</h2>
-                <p class="text-center">Contenido de ejemplo para la sección 1.</p>
-            </div>
-        </section>
+  <script>
+    const secciones = [
+      {
+        titulo: "1. Chinatown (Yaowarat Road) 🏮",
+        descripcion: "Corazón del barrio chino de Bangkok, famoso por sus luces de neón, puestos de comida callejera y ambiente vibrante.",
+        horario: "Activo hasta la medianoche, con algunos puestos abiertos hasta la 1:00 AM.",
+        ubicacion: "Yaowarat Road, Bangkok",
+        coordenadas: "13.7394, 100.5107",
+        tomas: [
+          "1.1 - Plano general de luces de neón",
+          "1.2 - Detalle de puestos de comida callejera",
+          "1.3 - Ambiente vibrante con gente"
+        ]
+      },
+      {
+        titulo: "2. Talat Noi 🎨",
+        descripcion: "Barrio histórico conocido por su arte callejero, con murales de artistas locales como Alex Face y Bonus TMC.",
+        horario: "Accesible las 24 horas.",
+        ubicacion: "Cerca de Chinatown, Bangkok",
+        coordenadas: "13.7365, 100.5132",
+        tomas: [
+          "2.1 - Murales de Alex Face",
+          "2.2 - Callejones con arte urbano",
+          "2.3 - Detalle de grafitis únicos"
+        ]
+      },
+      {
+        titulo: "3. Chaloemla Park (Graffiti Park) 🖼️",
+        descripcion: "Parque urbano transformado en una galería de arte al aire libre, con murales vibrantes y espacio para patinadores.",
+        horario: "Abierto las 24 horas.",
+        ubicacion: "Cerca de la estación BTS Ratchathewi, Bangkok",
+        coordenadas: "13.7517, 100.5310",
+        tomas: [
+          "3.1 - Panorámica de murales vibrantes",
+          "3.2 - Patinadores en acción",
+          "3.3 - Detalles de grafitis coloridos"
+        ]
+      },
+      {
+        titulo: "4. Memorial Bridge (Saphan Phut) 🌉",
+        descripcion: "Puente histórico que ofrece vistas panorámicas del río Chao Phraya y el skyline de Bangkok.",
+        horario: "Abierto las 24 horas.",
+        ubicacion: "Saphan Phut, Bangkok",
+        coordenadas: "13.7438, 100.5005",
+        tomas: [
+          "4.1 - Panorámica del skyline",
+          "4.2 - Reflejos en el río Chao Phraya",
+          "4.3 - Tráfico nocturno en el puente"
+        ]
+      },
+      {
+        titulo: "5. Pak Khlong Talat (Mercado de Flores) 🌸",
+        descripcion: "Mercado mayorista de flores, abierto las 24 horas, conocido por su variedad y colorido.",
+        horario: "Abierto las 24 horas.",
+        ubicacion: "Chak Phet Road, cerca del río Chao Phraya, Bangkok",
+        coordenadas: "13.7420, 100.4960",
+        tomas: [
+          "5.1 - Arreglos florales coloridos",
+          "5.2 - Vendedores en acción",
+          "5.3 - Detalles de flores exóticas"
+        ]
+      },
+      {
+        titulo: "6. Khao San Road 🎶",
+        descripcion: "Calle famosa por su vida nocturna, bares, música en vivo y ambiente festivo.",
+        horario: "Activa hasta altas horas de la noche.",
+        ubicacion: "Khao San Road, Bangkok",
+        coordenadas: "13.7590, 100.4975",
+        tomas: [
+          "6.1 - Ambiente festivo nocturno",
+          "6.2 - Música en vivo en bares",
+          "6.3 - Luces y letreros de neón"
+        ]
+      },
+      {
+        titulo: "7. The One Ratchada Night Market 🛍️",
+        descripcion: "Mercado nocturno con una amplia variedad de comida, tiendas y entretenimiento.",
+        horario: "Abierto hasta las 12:00 AM.",
+        ubicacion: "Ratchadaphisek Road, Bangkok",
+        coordenadas: "13.8048, 100.5615",
+        tomas: [
+          "7.1 - Panorámica del mercado nocturno",
+          "7.2 - Puestos de comida callejera",
+          "7.3 - Ambiente y multitud comprando"
+        ]
+      },
+      {
+        titulo: "8. Victory Monument 🏛️",
+        descripcion: "Monumento emblemático rodeado de tráfico constante y luces urbanas.",
+        horario: "Espacio público abierto las 24 horas.",
+        ubicacion: "Ratchathewi District, Bangkok",
+        coordenadas: "13.7563, 100.5320",
+        tomas: [
+          "8.1 - Monumento iluminado por la noche",
+          "8.2 - Tráfico nocturno con sendas de luz",
+          "8.3 - Ángulo bajo del monumento"
+        ]
+      },
+      {
+        titulo: "9. Soi Charoen Krung 30 🖌️",
+        descripcion: "Callejón en el distrito creativo de Bangkok, conocido por sus murales de artistas internacionales.",
+        horario: "Accesible las 24 horas.",
+        ubicacion: "Cerca del antiguo edificio de Correos, Bangkok",
+        coordenadas: "13.7290, 100.5135",
+        tomas: [
+          "9.1 - Murales de artistas internacionales",
+          "9.2 - Detalle de técnicas mixtas",
+          "9.3 - Contraste de arte urbano y arquitectura"
+        ]
+      },
+      {
+        titulo: "10. Warehouse 30 🏢",
+        descripcion: "Espacio cultural con cafés, galerías y arte urbano, ubicado en un entorno industrial.",
+        horario: "Algunas áreas accesibles las 24 horas.",
+        ubicacion: "Charoen Krung Road, Bangkok",
+        coordenadas: "13.7235, 100.5178",
+        tomas: [
+          "10.1 - Arquitectura industrial con arte",
+          "10.2 - Espacios culturales iluminados",
+          "10.3 - Detalles de elementos artísticos"
+        ]
+      },
+      {
+        titulo: "11. Khlong Saen Saep (Canal) 🛣️",
+        descripcion: "Canal urbano con murales a lo largo de sus orillas, especialmente cerca del puente Hua Chang.",
+        horario: "Accesible las 24 horas.",
+        ubicacion: "Cerca de la estación BTS Ratchathewi, Bangkok",
+        coordenadas: "13.7515, 100.5305",
+        tomas: [
+          "11.1 - Murales reflejados en el agua",
+          "11.2 - Vista lateral del canal con grafitis",
+          "11.3 - Contraste urbano con agua"
+        ]
+      },
+      {
+        titulo: "12. Metro Art (MRT Phahon Yothin) 🖼️",
+        descripcion: "Estación del metro decorada con arte contemporáneo y grafitis, parte de un proyecto cultural del MRT.",
+        horario: "Accesible durante el horario de funcionamiento del metro (aprox. hasta medianoche).",
+        ubicacion: "MRT Phahon Yothin, Chatuchak, Bangkok",
+        coordenadas: "13.8125, 100.5530",
+        tomas: [
+          "12.1 - Arte contemporáneo en estación",
+          "12.2 - Detalles de los murales del MRT",
+          "12.3 - Contraste de viajeros y arte"
+        ]
+      },
+      {
+        titulo: "13. Hua Chang Bridge 🚇",
+        descripcion: "Puente peatonal decorado con arte urbano a los lados del canal, zona tranquila y visual.",
+        horario: "Abierto 24/7.",
+        ubicacion: "Cerca del Hotel Asia Bangkok, a pocos pasos del BTS Ratchathewi",
+        coordenadas: "13.7515, 100.5305",
+        tomas: [
+          "13.1 - Reflejos en el agua",
+          "13.2 - Arte urbano del puente",
+          "13.3 - Ángulos bajos con perspectiva"
+        ]
+      },
+      {
+        titulo: "14. Soi Nana (Chinatown hipster) 🖌️",
+        descripcion: "No confundir con Nana Sukhumvit. Esta calle está en Chinatown y es conocida por bares artísticos y murales ocultos.",
+        horario: "Abierto hasta medianoche, pero los callejones están abiertos toda la noche.",
+        ubicacion: "Soi Nana, cerca de MRT Hua Lamphong",
+        coordenadas: "13.7368, 100.5160",
+        tomas: [
+          "14.1 - Puertas antiguas con arte",
+          "14.2 - Ambiente de los bares artísticos",
+          "14.3 - Murales ocultos en esquinas"
+        ]
+      },
+      {
+        titulo: "15. Sathorn Unique Tower (Ghost Tower) 🌇",
+        descripcion: "Rascacielos abandonado, ícono urbano para tomas misteriosas y siluetas. No está oficialmente abierto, pero se puede grabar desde afuera.",
+        horario: "24/7 vista desde el exterior.",
+        ubicacion: "Sathorn Road, Bangkok",
+        coordenadas: "13.7200, 100.5180",
+        tomas: [
+          "15.1 - Silueta del rascacielos abandonado",
+          "15.2 - Ambiente urbano distópico",
+          "15.3 - Contraste con edificios iluminados cercanos"
+        ]
+      },
+      {
+        titulo: "16. Bangrak Riverview Walk 🧱",
+        descripcion: "Paseo peatonal junto al río, con zonas de arte urbano y viejos almacenes decorados con grafitis.",
+        horario: "Abierto todo el día y noche.",
+        ubicacion: "A lo largo de Charoen Krung Road (zona de Bangrak)",
+        coordenadas: "13.7260, 100.5150",
+        tomas: [
+          "16.1 - Paseo peatonal junto al río",
+          "16.2 - Almacenes con grafitis extensos",
+          "16.3 - Fachadas industriales con arte"
+        ]
+      }
+    ];
 
-        <!-- Section 2 -->
-        <section id="section2" class="section">
-            <div class="container">
-                <h2 class="text-center">Sección 2</h2>
-                <p class="text-center">Contenido de ejemplo para la sección 2.</p>
-            </div>
-        </section>
+    const container = document.getElementById("checklist-container");
+    const progressBar = document.getElementById("progress-bar");
+    const completedCount = document.getElementById("completed-count");
+    const totalCount = document.getElementById("total-count");
+    const completionPercentage = document.getElementById("completion-percentage");
 
-        <!-- Section 3 -->
-        <section id="section3" class="section">
-            <div class="container">
-                <h2 class="text-center">Sección 3</h2>
-                <p class="text-center">Contenido de ejemplo para la sección 3.</p>
-            </div>
-        </section>
+    // Función para abrir Google Maps con las coordenadas
+    function openMaps(coordinates) {
+      window.open(`https://www.google.com/maps/search/?api=1&query=${coordinates}`, '_blank');
+    }
 
-        <!-- Contact Section -->
-        <section id="contact" class="section">
-            <div class="container">
-                <h2 class="text-center">Contacto</h2>
-                <p class="text-center">Contenido de ejemplo para la sección de contacto.</p>
-            </div>
-        </section>
-    </main>
+    function toggleDone(sectionIndex, itemIndex) {
+      const key = `toma-${sectionIndex}-${itemIndex}`;
+      const current = localStorage.getItem(key) === "true";
+      localStorage.setItem(key, !current);
+      renderChecklist();
+    }
 
-    <!-- Footer -->
-    <footer>
-        <div class="container footer-container">
-            <div>
-                <a href="#" class="footer-logo text-gradient">Mi Sitio</a>
-                <p>Descripción breve del sitio web.</p>
-                <div class="footer-social">
-                    <a href="#" class="social-icon">
-                        <i class="fab fa-github"></i>
-                    </a>
-                    <a href="#" class="social-icon">
-                        <i class="fab fa-linkedin-in"></i>
-                    </a>
-                    <a href="#" class="social-icon">
-                        <i class="fab fa-twitter"></i>
-                    </a>
-                    <a href="#" class="social-icon">
-                        <i class="fab fa-instagram"></i>
-                    </a>
-                </div>
-            </div>
-            
-            <div>
-                <h3 class="footer-heading">Enlaces rápidos</h3>
-                <ul class="footer-links">
-                    <li><a href="#home"><i class="fas fa-chevron-right"></i> Inicio</a></li>
-                    <li><a href="#section1"><i class="fas fa-chevron-right"></i> Sección 1</a></li>
-                    <li><a href="#section2"><i class="fas fa-chevron-right"></i> Sección 2</a></li>
-                    <li><a href="#section3"><i class="fas fa-chevron-right"></i> Sección 3</a></li>
-                    <li><a href="#contact"><i class="fas fa-chevron-right"></i> Contacto</a></li>
-                </ul>
-            </div>
-            
-            <div>
-                <h3 class="footer-heading">Servicios</h3>
-                <ul class="footer-links">
-                    <li><a href="#"><i class="fas fa-chevron-right"></i> Servicio 1</a></li>
-                    <li><a href="#"><i class="fas fa-chevron-right"></i> Servicio 2</a></li>
-                    <li><a href="#"><i class="fas fa-chevron-right"></i> Servicio 3</a></li>
-                    <li><a href="#"><i class="fas fa-chevron-right"></i> Servicio 4</a></li>
-                    <li><a href="#"><i class="fas fa-chevron-right"></i> Servicio 5</a></li>
-                </ul>
-            </div>
-            
-            <div>
-                <h3 class="footer-heading">Contáctame</h3>
-                <ul class="footer-links">
-                    <li><a href="mailto:email@ejemplo.com"><i class="fas fa-envelope"></i> email@ejemplo.com</a></li>
-                    <li><a href="tel:+123456789"><i class="fas fa-phone-alt"></i> +12 345 6789</a></li>
-                    <li><a href="#"><i class="fas fa-map-marker-alt"></i> Ciudad, País</a></li>
-                </ul>
-            </div>
-        </div>
+    function updateStats() {
+      let completed = 0;
+      let total = 0;
+
+      secciones.forEach((seccion, sectionIndex) => {
+        seccion.tomas.forEach((toma, itemIndex) => {
+          total++;
+          const key = `toma-${sectionIndex}-${itemIndex}`;
+          if (localStorage.getItem(key) === "true") {
+            completed++;
+          }
+        });
+      });
+
+      const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
+      
+      completedCount.textContent = completed;
+      totalCount.textContent = total;
+      completionPercentage.textContent = `${percentage}%`;
+      progressBar.style.width = `${percentage}%`;
+    }
+
+    function renderChecklist() {
+      container.innerHTML = "";
+      secciones.forEach((seccion, sectionIndex) => {
+        const div = document.createElement("div");
+        div.className = "section";
+
+        const h2 = document.createElement("h2");
+        h2.textContent = seccion.titulo;
+        div.appendChild(h2);
+
+        // Añadir información de la sección
+        const infoDiv = document.createElement("div");
+        infoDiv.className = "section-info";
         
-        <div class="footer-bottom">
-            <div class="container">
-                <p>&copy; 2025 Mi Sitio. Todos los derechos reservados.</p>
-            </div>
-        </div>
-    </footer>
-    <script src="js/mobile-menu.js"></script>
-    <script src="js/script.js"></script>
-    
+        // Descripción
+        const descItem = document.createElement("div");
+        descItem.className = "info-item";
+        descItem.innerHTML = `<strong>Descripción:</strong> ${seccion.descripcion}`;
+        infoDiv.appendChild(descItem);
+        
+        // Horario
+        const horarioItem = document.createElement("div");
+        horarioItem.className = "info-item";
+        horarioItem.innerHTML = `<strong>Horario:</strong> ${seccion.horario}`;
+        infoDiv.appendChild(horarioItem);
+        
+        // Ubicación con botón de Google Maps
+        const ubicacionItem = document.createElement("div");
+        ubicacionItem.className = "info-item";
+        ubicacionItem.innerHTML = `<strong>Ubicación:</strong> ${seccion.ubicacion} `;
+        
+        // Botón de Google Maps
+        const mapsButton = document.createElement("button");
+        mapsButton.className = "maps-button";
+        mapsButton.innerHTML = `<i class="fas fa-map-marker-alt"></i> Ver en Maps`;
+        mapsButton.onclick = () => openMaps(seccion.coordenadas);
+        ubicacionItem.appendChild(mapsButton);
+        
+        infoDiv.appendChild(ubicacionItem);
+        
+        div.appendChild(infoDiv);
+
+        const ul = document.createElement("ul");
+        seccion.tomas.forEach((toma, itemIndex) => {
+          const li = document.createElement("li");
+          const key = `toma-${sectionIndex}-${itemIndex}`;
+          const isDone = localStorage.getItem(key) === "true";
+          if (isDone) li.classList.add("done");
+
+          const span = document.createElement("span");
+          span.textContent = toma;
+
+          const buttonsContainer = document.createElement("div");
+          buttonsContainer.className = "buttons-container";
+
+          const button = document.createElement("button");
+          button.className = "toggle-btn";
+          button.textContent = isDone ? "Desmarcar" : "Completada";
+          button.onclick = () => toggleDone(sectionIndex, itemIndex);
+
+          buttonsContainer.appendChild(button);
+          
+          li.appendChild(span);
+          li.appendChild(buttonsContainer);
+          ul.appendChild(li);
+        });
+
+        div.appendChild(ul);
+        container.appendChild(div);
+      });
+
+      updateStats();
+    }
+
+    // Agregar efecto de animación al cargar la página
+    document.addEventListener('DOMContentLoaded', () => {
+      const sections = document.querySelectorAll('.section');
+      sections.forEach((section, index) => {
+        section.style.opacity = '0';
+        section.style.transform = 'translateY(20px)';
+        setTimeout(() => {
+          section.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+          section.style.opacity = '1';
+          section.style.transform = 'translateY(0)';
+        }, 100 * index);
+      });
+    });
+
+    renderChecklist();
+  </script>
 </body>
 </html>
