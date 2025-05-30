@@ -1251,9 +1251,9 @@
         let audioContext;
         let soundEffects = {};
 
-        // Pool completo de preguntas (60 preguntas, se seleccionan 20 al azar)
+        // Pool completo de preguntas (120 preguntas, se seleccionan 20 al azar)
         const questionPool = [
-            // Conexión Emocional (15 preguntas)
+            // Conexión Emocional (30 preguntas)
             {
                 category: "Conexión Emocional",
                 text: "Mi pareja realmente me entiende cuando le cuento mis cosas 💯",
@@ -1329,8 +1329,83 @@
                 text: "A menudo me siento incomprendido/a en esta relación 😕",
                 reverse: true
             },
+            {
+                category: "Conexión Emocional",
+                text: "Mi pareja conoce mis secretos más profundos 🔐",
+                reverse: false
+            },
+            {
+                category: "Conexión Emocional",
+                text: "Prefiero estar solo/a que pasar tiempo con mi pareja 🏠",
+                reverse: true
+            },
+            {
+                category: "Conexión Emocional",
+                text: "Nos reímos juntos todos los días 😂",
+                reverse: false
+            },
+            {
+                category: "Conexión Emocional",
+                text: "Siento que fingimos ser felices la mayor parte del tiempo 🎭",
+                reverse: true
+            },
+            {
+                category: "Conexión Emocional",
+                text: "Mi pareja me inspira a ser mejor persona 🌟",
+                reverse: false
+            },
+            {
+                category: "Conexión Emocional",
+                text: "Ya no compartimos sueños o planes juntos 💭",
+                reverse: true
+            },
+            {
+                category: "Conexión Emocional",
+                text: "Me siento completamente cómodo/a siendo yo mismo/a con mi pareja 😌",
+                reverse: false
+            },
+            {
+                category: "Conexión Emocional",
+                text: "Evito mostrar mis verdaderas emociones a mi pareja 😶",
+                reverse: true
+            },
+            {
+                category: "Conexión Emocional",
+                text: "Mi pareja me hace sentir especial y único/a ✨",
+                reverse: false
+            },
+            {
+                category: "Conexión Emocional",
+                text: "Siento que somos como extraños viviendo juntos 👥",
+                reverse: true
+            },
+            {
+                category: "Conexión Emocional",
+                text: "Tenemos tradiciones y rituales que nos unen 🎊",
+                reverse: false
+            },
+            {
+                category: "Conexión Emocional",
+                text: "Ya no me importa lo que piense mi pareja sobre mí 🤷",
+                reverse: true
+            },
+            {
+                category: "Conexión Emocional",
+                text: "Mi pareja es la primera persona que quiero ver cuando llego a casa 🏡",
+                reverse: false
+            },
+            {
+                category: "Conexión Emocional",
+                text: "Me aburro cuando estamos juntos sin hacer nada 😴",
+                reverse: true
+            },
+            {
+                category: "Conexión Emocional",
+                text: "Podemos estar en silencio y sentirme completamente conectado/a 🤐",
+                reverse: false
+            },
 
-            // Deseo y Atracción (15 preguntas)
+            // Deseo y Atracción (30 preguntas) - MÁS CALIENTES
             {
                 category: "Deseo y Atracción",
                 text: "Todavía me atrae físicamente como al principio 🔥",
@@ -1358,56 +1433,131 @@
             },
             {
                 category: "Deseo y Atracción",
-                text: "Me emociono cuando voy a ver a mi pareja ✨",
-                reverse: false
-            },
-            {
-                category: "Deseo y Atracción",
-                text: "He perdido el interés en la intimidad física 😴",
+                text: "He pensado en alguien más durante la intimidad con mi pareja 🙈",
                 reverse: true
             },
             {
                 category: "Deseo y Atracción",
-                text: "Mi pareja aún me pone nervioso/a de la buena manera 🦋",
+                text: "Mi pareja aún me excita solo con mirarme 👀",
                 reverse: false
             },
             {
                 category: "Deseo y Atracción",
-                text: "Evito el contacto físico con mi pareja 🚫",
+                text: "He comparado físicamente a mi pareja con otras personas 📏",
                 reverse: true
             },
             {
                 category: "Deseo y Atracción",
-                text: "Me gusta cómo me ve mi pareja 👀",
+                text: "Aún tengo ganas de tocar a mi pareja cuando la veo 🤲",
                 reverse: false
             },
             {
                 category: "Deseo y Atracción",
-                text: "Siento más atracción por otras personas que por mi pareja 👥",
+                text: "Me siento más atraído/a hacia personas en redes sociales que hacia mi pareja 📱",
                 reverse: true
             },
             {
                 category: "Deseo y Atracción",
-                text: "Aún me dan ganas de besarlo/a cuando lo/la veo 💋",
+                text: "Mi pareja me sigue poniendo nervioso/a cuando me toca 🦋",
                 reverse: false
             },
             {
                 category: "Deseo y Atracción",
-                text: "La relación se siente más como amistad que romance 🤝",
+                text: "He sentido deseo sexual por alguien que conozco en persona 🔥",
                 reverse: true
             },
             {
                 category: "Deseo y Atracción",
-                text: "Mi pareja me sigue pareciendo increíblemente sexy 🔥",
+                text: "La pasión entre nosotros sigue siendo intensa 🌶️",
                 reverse: false
             },
             {
                 category: "Deseo y Atracción",
-                text: "Ya no me emociona la idea de estar íntimamente con mi pareja 😑",
+                text: "He fantaseado con actores/actrices o influencers 🎬",
+                reverse: true
+            },
+            {
+                category: "Deseo y Atracción",
+                text: "Mi pareja conoce exactamente cómo satisfacerme 💯",
+                reverse: false
+            },
+            {
+                category: "Deseo y Atracción",
+                text: "He mirado con deseo a otras personas cuando estoy con mi pareja 👁️",
+                reverse: true
+            },
+            {
+                category: "Deseo y Atracción",
+                text: "Siento mariposas en el estómago cuando mi pareja me besa 💋",
+                reverse: false
+            },
+            {
+                category: "Deseo y Atracción",
+                text: "He pensado en experiencias sexuales con alguien específico que no es mi pareja 🤫",
+                reverse: true
+            },
+            {
+                category: "Deseo y Atracción",
+                text: "Mi pareja sigue siendo mi fantasía sexual principal 🔥",
+                reverse: false
+            },
+            {
+                category: "Deseo y Atracción",
+                text: "He sentido atracción física fuerte por un amigo/a 👥",
+                reverse: true
+            },
+            {
+                category: "Deseo y Atracción",
+                text: "Me emociono sexualmente pensando en mi pareja 🤤",
+                reverse: false
+            },
+            {
+                category: "Deseo y Atracción",
+                text: "He coqueteado con alguien más aunque sea 'jugando' 😉",
+                reverse: true
+            },
+            {
+                category: "Deseo y Atracción",
+                text: "Mi pareja me enciende con solo susurrarme al oído 🗣️",
+                reverse: false
+            },
+            {
+                category: "Deseo y Atracción",
+                text: "He sentido que alguien más me entiende mejor sexualmente 💭",
+                reverse: true
+            },
+            {
+                category: "Deseo y Atracción",
+                text: "La química sexual con mi pareja sigue siendo explosiva 💥",
+                reverse: false
+            },
+            {
+                category: "Deseo y Atracción",
+                text: "He tenido sueños eróticos con personas que no son mi pareja 😴",
+                reverse: true
+            },
+            {
+                category: "Deseo y Atracción",
+                text: "Mi pareja sabe exactamente cómo prenderme 🔥",
+                reverse: false
+            },
+            {
+                category: "Deseo y Atracción",
+                text: "He sentido ganas de experimentar cosas nuevas con alguien más 🆕",
+                reverse: true
+            },
+            {
+                category: "Deseo y Atracción",
+                text: "No puedo mantener las manos quietas cuando estoy cerca de mi pareja 👐",
+                reverse: false
+            },
+            {
+                category: "Deseo y Atracción",
+                text: "He sentido curiosidad sexual por personas del trabajo/estudio 🏢",
                 reverse: true
             },
 
-            // Comunicación y Honestidad (15 preguntas)
+            // Comunicación y Honestidad (30 preguntas)
             {
                 category: "Comunicación y Honestidad",
                 text: "Podemos hablar de cualquier tema sin dramas 💬",
@@ -1435,129 +1585,279 @@
             },
             {
                 category: "Comunicación y Honestidad",
-                text: "Mi pareja realmente escucha cuando le hablo 👂",
-                reverse: false
-            },
-            {
-                category: "Comunicación y Honestidad",
-                text: "A menudo siento que mi pareja no me presta atención 📱",
+                text: "He mentido sobre con quién estuve o dónde fui 🤥",
                 reverse: true
             },
             {
                 category: "Comunicación y Honestidad",
-                text: "Podemos bromear y reírnos juntos fácilmente 😂",
+                text: "Mi pareja y yo hablamos de nuestros miedos sin juzgarnos 😰",
                 reverse: false
             },
             {
                 category: "Comunicación y Honestidad",
-                text: "Las discusiones con mi pareja se vuelven tóxicas rápido ☠️",
+                text: "He borrado mensajes para que mi pareja no los vea 📱",
                 reverse: true
             },
             {
                 category: "Comunicación y Honestidad",
-                text: "Mi pareja respeta mis opiniones aunque no esté de acuerdo 🤔",
+                text: "Podemos resolver cualquier conflicto hablando 🗣️",
                 reverse: false
             },
             {
                 category: "Comunicación y Honestidad",
-                text: "Siento que tengo que caminar en huevos para no molestar 🥚",
+                text: "He guardado secretos sobre mis sentimientos hacia otras personas 🤐",
                 reverse: true
             },
             {
                 category: "Comunicación y Honestidad",
-                text: "Nos comunicamos mejor ahora que al principio 📈",
+                text: "Mi pareja conoce mis inseguridades más profundas 💔",
                 reverse: false
             },
             {
                 category: "Comunicación y Honestidad",
-                text: "Prefiero contarle mis problemas a otras personas 👥",
+                text: "He evitado contar detalles sobre salidas con amigos 🍺",
                 reverse: true
             },
             {
                 category: "Comunicación y Honestidad",
-                text: "Mi pareja me hace sentir escuchado/a y valorado/a 💝",
+                text: "Nos contamos todo lo que nos pasa en el día 📅",
                 reverse: false
             },
             {
                 category: "Comunicación y Honestidad",
-                text: "A menudo malinterpretamos lo que el otro dice 🤷",
+                text: "He fingido estar bien cuando en realidad estaba molesto/a 😤",
+                reverse: true
+            },
+            {
+                category: "Comunicación y Honestidad",
+                text: "Mi pareja me escucha sin interrumpir cuando necesito desahogarme 👂",
+                reverse: false
+            },
+            {
+                category: "Comunicación y Honestidad",
+                text: "He ocultado conversaciones con personas del pasado 📞",
+                reverse: true
+            },
+            {
+                category: "Comunicación y Honestidad",
+                text: "Podemos bromear sobre temas delicados sin lastimarnos 😄",
+                reverse: false
+            },
+            {
+                category: "Comunicación y Honestidad",
+                text: "He evitado mencionar a ciertas personas para no crear problemas 🚫",
+                reverse: true
+            },
+            {
+                category: "Comunicación y Honestidad",
+                text: "Mi pareja respeta cuando necesito espacio para procesar las cosas 🌌",
+                reverse: false
+            },
+            {
+                category: "Comunicación y Honestidad",
+                text: "He cambiado la verdad para evitar que mi pareja se moleste 🔄",
+                reverse: true
+            },
+            {
+                category: "Comunicación y Honestidad",
+                text: "Nos comunicamos mejor ahora que cuando empezamos 📈",
+                reverse: false
+            },
+            {
+                category: "Comunicación y Honestidad",
+                text: "He tenido pensamientos que nunca le confesaría a mi pareja 🧠",
+                reverse: true
+            },
+            {
+                category: "Comunicación y Honestidad",
+                text: "Mi pareja nota cuando algo me molesta aunque no lo diga 🔍",
+                reverse: false
+            },
+            {
+                category: "Comunicación y Honestidad",
+                text: "He usado mi teléfono de manera que mi pareja no pueda ver 📲",
+                reverse: true
+            },
+            {
+                category: "Comunicación y Honestidad",
+                text: "Podemos hablar de nuestro futuro juntos sin miedo 🔮",
+                reverse: false
+            },
+            {
+                category: "Comunicación y Honestidad",
+                text: "He evitado responder preguntas directas de mi pareja ❓",
+                reverse: true
+            },
+            {
+                category: "Comunicación y Honestidad",
+                text: "Mi pareja me hace sentir seguro/a para expresar mis opiniones 🛡️",
+                reverse: false
+            },
+            {
+                category: "Comunicación y Honestidad",
+                text: "He actuado como si no hubiera pasado nada cuando sí pasó algo 🎭",
+                reverse: true
+            },
+            {
+                category: "Comunicación y Honestidad",
+                text: "Tenemos conversaciones profundas regularmente 🌊",
+                reverse: false
+            },
+            {
+                category: "Comunicación y Honestidad",
+                text: "He mantenido contacto secreto con alguien del pasado 📧",
                 reverse: true
             },
 
-            // Lealtad Emocional (15 preguntas)
+            // Tentación y Deseo Externo (30 preguntas) - SÚPER CALIENTES
             {
-                category: "Lealtad Emocional",
-                text: "He sentido algo romántico por alguien que no es mi pareja 💘",
+                category: "Tentación y Deseo Externo",
+                text: "He sentido atracción romántica fuerte por alguien que no es mi pareja 💘",
                 reverse: true
             },
             {
-                category: "Lealtad Emocional",
-                text: "No me imagino un futuro con nadie más 🌟",
+                category: "Tentación y Deseo Externo",
+                text: "No me imagino un futuro romántico con nadie más 🌟",
                 reverse: false
             },
             {
-                category: "Lealtad Emocional",
-                text: "He buscado conexión emocional en otras personas 🔍",
+                category: "Tentación y Deseo Externo",
+                text: "He buscado conexión emocional profunda en otras personas 🔍",
                 reverse: true
             },
             {
-                category: "Lealtad Emocional",
-                text: "Estoy 100% comprometido/a con esta relación 💯",
+                category: "Tentación y Deseo Externo",
+                text: "Estoy 100% comprometido/a emocionalmente con esta relación 💯",
                 reverse: false
             },
             {
-                category: "Lealtad Emocional",
-                text: "A veces pienso que podría ser más feliz con otra persona 🤔",
+                category: "Tentación y Deseo Externo",
+                text: "A veces pienso que podría ser más feliz con otra persona específica 🤔",
                 reverse: true
             },
             {
-                category: "Lealtad Emocional",
-                text: "Mi pareja es mi prioridad número uno 🥇",
-                reverse: false
-            },
-            {
-                category: "Lealtad Emocional",
-                text: "He comparado a mi pareja con otras personas que me atraen 📊",
+                category: "Tentación y Deseo Externo",
+                text: "He tenido fantasías románticas detalladas con alguien más 💭",
                 reverse: true
             },
             {
-                category: "Lealtad Emocional",
-                text: "Defiendo a mi pareja cuando otros la critican 🛡️",
+                category: "Tentación y Deseo Externo",
+                text: "Mi pareja es irreemplazable en todos los aspectos 💎",
                 reverse: false
             },
             {
-                category: "Lealtad Emocional",
-                text: "He pensado en cómo sería estar con alguien más 💭",
+                category: "Tentación y Deseo Externo",
+                text: "He sentido mariposas por alguien que no es mi pareja 🦋",
                 reverse: true
             },
             {
-                category: "Lealtad Emocional",
-                text: "Mi pareja es irreemplazable para mí 💎",
+                category: "Tentación y Deseo Externo",
+                text: "Defiendo a mi pareja cuando otros la critican o insinúan cosas 🛡️",
                 reverse: false
             },
             {
-                category: "Lealtad Emocional",
-                text: "He tenido conversaciones íntimas con alguien que no es mi pareja 💬",
+                category: "Tentación y Deseo Externo",
+                text: "He imaginado cómo sería besar a alguien específico 💋",
                 reverse: true
             },
             {
-                category: "Lealtad Emocional",
-                text: "Elijo a mi pareja todos los días 💕",
-                reverse: false
-            },
-            {
-                category: "Lealtad Emocional",
-                text: "A veces fantaseo con terminar la relación 💔",
+                category: "Tentación y Deseo Externo",
+                text: "He pensado seriamente en cómo sería estar íntimamente con otra persona 🔥",
                 reverse: true
             },
             {
-                category: "Lealtad Emocional",
-                text: "Mi pareja es mi persona favorita en el mundo 🌍",
+                category: "Tentación y Deseo Externo",
+                text: "Mi pareja satisface todos mis deseos emocionales y físicos 💕",
                 reverse: false
             },
             {
-                category: "Lealtad Emocional",
-                text: "He considerado seriamente dejar a mi pareja 🚪",
+                category: "Tentación y Deseo Externo",
+                text: "He sentido conexión especial con alguien más que me preocupa 🚨",
+                reverse: true
+            },
+            {
+                category: "Tentación y Deseo Externo",
+                text: "Elijo activamente a mi pareja sobre cualquier otra opción 💪",
+                reverse: false
+            },
+            {
+                category: "Tentación y Deseo Externo",
+                text: "He tenido conversaciones íntimas que cruzaron la línea con alguien más 💬",
+                reverse: true
+            },
+            {
+                category: "Tentación y Deseo Externo",
+                text: "He fantaseado con terminar mi relación para estar con alguien específico 💔",
+                reverse: true
+            },
+            {
+                category: "Tentación y Deseo Externo",
+                text: "Mi pareja es mi única opción romántica real y verdadera 🎯",
+                reverse: false
+            },
+            {
+                category: "Tentación y Deseo Externo",
+                text: "He sentido tentación real de hacer algo con alguien más 😈",
+                reverse: true
+            },
+            {
+                category: "Tentación y Deseo Externo",
+                text: "He considerado seriamente si estaría mejor con alguien específico que conozco 🤷",
+                reverse: true
+            },
+            {
+                category: "Tentación y Deseo Externo",
+                text: "Mi corazón le pertenece completamente a mi pareja actual 💖",
+                reverse: false
+            },
+            {
+                category: "Tentación y Deseo Externo",
+                text: "He sentido que alguien más me entiende mejor que mi pareja 🧠",
+                reverse: true
+            },
+            {
+                category: "Tentación y Deseo Externo",
+                text: "He tenido sueños románticos recurrentes con la misma persona 😴",
+                reverse: true
+            },
+            {
+                category: "Tentación y Deseo Externo",
+                text: "No hay nadie en el mundo que me atraiga más que mi pareja 🌍",
+                reverse: false
+            },
+            {
+                category: "Tentación y Deseo Externo",
+                text: "He pensado en cómo sería la vida diaria con alguien específico 🏠",
+                reverse: true
+            },
+            {
+                category: "Tentación y Deseo Externo",
+                text: "He comparado emocionalmente a mi pareja con alguien más y mi pareja perdió 📊",
+                reverse: true
+            },
+            {
+                category: "Tentación y Deseo Externo",
+                text: "Mi pareja es mi alma gemela y no necesito buscar en otro lado 👫",
+                reverse: false
+            },
+            {
+                category: "Tentación y Deseo Externo",
+                text: "He sentido que tengo más química con alguien más ⚡",
+                reverse: true
+            },
+            {
+                category: "Tentación y Deseo Externo",
+                text: "He tenido momentos donde casi cruzo la línea con alguien más 🚫",
+                reverse: true
+            },
+            {
+                category: "Tentación y Deseo Externo",
+                text: "Mi compromiso con mi pareja es inquebrantable sin importar quién aparezca 🔒",
+                reverse: false
+            },
+            {
+                category: "Tentación y Deseo Externo",
+                text: "He sentido que alguien más podría hacerme más feliz en general 😊",
                 reverse: true
             }
         ];
@@ -1575,6 +1875,10 @@
             playSound('success');
             document.getElementById('disclaimer-modal').classList.remove('active');
             document.getElementById('start-screen').classList.add('active');
+            
+            // Limpiar cualquier selección previa para empezar fresco
+            selectedQuestions = [];
+            responses = { partner1: {}, partner2: {} };
         }
 
         function initializeAudio() {
@@ -1676,16 +1980,33 @@
                 categories[question.category].push(question);
             });
 
-            // Seleccionar 5 preguntas de cada categoría aleatoriamente
+            // Limpiar preguntas anteriores
             selectedQuestions = [];
-            Object.keys(categories).forEach(category => {
-                const categoryQuestions = categories[category];
-                const shuffled = categoryQuestions.sort(() => Math.random() - 0.5);
-                selectedQuestions.push(...shuffled.slice(0, 5));
+            
+            // Seleccionar 5 preguntas de cada categoría aleatoriamente usando timestamp para más randomness
+            const timestamp = Date.now();
+            Object.keys(categories).forEach((category, categoryIndex) => {
+                const categoryQuestions = [...categories[category]]; // Crear copia
+                
+                // Mezclar usando algoritmo Fisher-Yates con timestamp
+                for (let i = categoryQuestions.length - 1; i > 0; i--) {
+                    const randomSeed = (timestamp + categoryIndex + i + currentPartner + Math.random() * 1000) % categoryQuestions.length;
+                    const j = Math.floor(randomSeed);
+                    [categoryQuestions[i], categoryQuestions[j]] = [categoryQuestions[j], categoryQuestions[i]];
+                }
+                
+                // Tomar las primeras 5 después del shuffle
+                selectedQuestions.push(...categoryQuestions.slice(0, 5));
             });
 
-            // Mezclar el orden final
-            selectedQuestions = selectedQuestions.sort(() => Math.random() - 0.5);
+            // Mezclar el orden final de todas las preguntas con más randomness
+            for (let i = selectedQuestions.length - 1; i > 0; i--) {
+                const randomSeed = (timestamp + currentPartner + Math.random() * 1000 + i) % selectedQuestions.length;
+                const j = Math.floor(randomSeed);
+                [selectedQuestions[i], selectedQuestions[j]] = [selectedQuestions[j], selectedQuestions[i]];
+            }
+
+            console.log(`Preguntas generadas para partner ${currentPartner}:`, selectedQuestions.length);
         }
 
         function playSound(soundName) {
@@ -1747,6 +2068,10 @@
             currentRole = partner2Role;
             currentPartner = 2;
             currentQuestionIndex = 0;
+            
+            // Generar nuevas preguntas para el segundo partner
+            selectRandomQuestions();
+            
             showScreen('test-screen');
             updateTestTitle();
             renderQuestions();
@@ -1868,7 +2193,7 @@
             let categoryScores = {};
 
             // Inicializar categorías
-            const categories = ['Conexión Emocional', 'Deseo y Atracción', 'Comunicación y Honestidad', 'Lealtad Emocional'];
+            const categories = ['Conexión Emocional', 'Deseo y Atracción', 'Comunicación y Honestidad', 'Tentación y Deseo Externo'];
             categories.forEach(cat => {
                 categoryScores[cat] = { total: 0, count: 0 };
             });
@@ -2088,13 +2413,14 @@
         function restartTest() {
             playSound('success');
             
+            // Resetear todas las variables
             currentRole = '';
             currentQuestionIndex = 0;
             currentPartner = 1;
             responses = { partner1: {}, partner2: {} };
             partner1Role = '';
             partner2Role = '';
-            selectedQuestions = [];
+            selectedQuestions = []; // Limpiar preguntas para que se generen nuevas
             
             document.querySelectorAll('.role-btn').forEach(btn => btn.classList.remove('selected'));
             document.getElementById('start-test').disabled = true;
@@ -2139,6 +2465,5 @@ Los resultados están locos... ¿Te atreves a hacerlo con tu pareja?
             }, 100);
         }
     </script>
-    <script src="security.js"></script>
 </body>
 </html>
