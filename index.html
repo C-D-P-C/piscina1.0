@@ -1373,6 +1373,8 @@
 
     <!-- Chart.js desde CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <!-- jsPDF para generar PDFs -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
     <script>
       // Estado de la aplicación
@@ -1650,76 +1652,78 @@
 
           if (history.length === 0) {
             return `
-                        <div class="analysis-section">
-                            <div class="analysis-header">
-                                <span>📊</span>
-                                <h3 class="analysis-title">Historial de Análisis</h3>
-                            </div>
-                            <div class="results-empty" style="height: 300px;">
-                                <div class="results-empty-icon">🕒</div>
-                                <div class="results-empty-title">Sin historial disponible</div>
-                                <div class="results-empty-text">Los análisis procesados aparecerán aquí automáticamente</div>
-                            </div>
-                        </div>
-                    `;
+        <div class="analysis-section">
+          <div class="analysis-header">
+            <span>📊</span>
+            <h3 class="analysis-title">Historial de Análisis</h3>
+          </div>
+          <div class="results-empty" style="height: 300px;">
+            <div class="results-empty-icon">🕒</div>
+            <div class="results-empty-title">Sin historial disponible</div>
+            <div class="results-empty-text">Los análisis procesados aparecerán aquí automáticamente</div>
+          </div>
+        </div>
+      `;
           }
 
           const historyItems = history
             .map(
               (item) => `
-                    <div class="benchmark-item history-item" data-id="${
-                      item.id
-                    }">
-                        <div class="history-info">
-                            <div class="history-date">
-                                <span class="history-icon">📅</span>
-                                <strong>${item.date}</strong> a las ${item.time}
-                            </div>
-                            <div class="history-summary">
-                                <span>📊 ${formatCOP(
-                                  item.results.costoTotal
-                                )} total</span>
-                                <span>•</span>
-                                <span>🐔 ${item.results.kilosPollo.toLocaleString(
-                                  "es-CO"
-                                )} kg</span>
-                                <span>•</span>
-                                <span>💧 ${item.results.aguaConsumida} m³</span>
-                            </div>
-                        </div>
-                        <div class="history-actions">
-                            <button class="btn btn-secondary btn-sm" onclick="window.app.loadFromHistory('${
-                              item.id
-                            }')" title="Ver este análisis">
-                                <span>👁️</span>
-                                Ver
-                            </button>
-                        </div>
-                    </div>
-                `
+        <div class="benchmark-item history-item" data-id="${item.id}">
+          <div class="history-info">
+            <div class="history-date">
+              <span class="history-icon">📅</span>
+              <strong>${item.date}</strong> a las ${item.time}
+            </div>
+            <div class="history-summary">
+              <span>📊 ${formatCOP(item.results.costoTotal)} total</span>
+              <span>•</span>
+              <span>🐔 ${item.results.kilosPollo.toLocaleString(
+                "es-CO"
+              )} kg</span>
+              <span>•</span>
+              <span>💧 ${item.results.aguaConsumida} m³</span>
+            </div>
+          </div>
+          <div class="history-actions">
+            <button class="btn btn-secondary btn-sm" onclick="window.app.loadFromHistory('${
+              item.id
+            }')" title="Ver este análisis">
+              <span>👁️</span>
+              Ver
+            </button>
+            <button class="btn btn-primary btn-sm" onclick="window.app.generatePDFReport('${
+              item.id
+            }')" title="Descargar informe PDF">
+              <span>📄</span>
+              PDF
+            </button>
+          </div>
+        </div>
+      `
             )
             .join("");
 
           return `
-                    <div class="analysis-section">
-                        <div class="analysis-header">
-                            <span>📊</span>
-                            <h3 class="analysis-title">Historial de Análisis MacPollo</h3>
-                        </div>
-                        <div class="history-controls">
-                            <div class="history-stats">
-                                <span class="history-count">${history.length} análisis guardados</span>
-                            </div>
-                            <button class="btn btn-secondary" onclick="window.app.clearHistoryWithConfirm()" title="Limpiar todo el historial">
-                                <span>🧹</span>
-                                Limpiar Historial
-                            </button>
-                        </div>
-                        <div class="benchmark-list history-list">
-                            ${historyItems}
-                        </div>
-                    </div>
-                `;
+      <div class="analysis-section">
+        <div class="analysis-header">
+          <span>📊</span>
+          <h3 class="analysis-title">Historial de Análisis MacPollo</h3>
+        </div>
+        <div class="history-controls">
+          <div class="history-stats">
+            <span class="history-count">${history.length} análisis guardados</span>
+          </div>
+          <button class="btn btn-secondary" onclick="window.app.clearHistoryWithConfirm()" title="Limpiar todo el historial">
+            <span>🧹</span>
+            Limpiar Historial
+          </button>
+        </div>
+        <div class="benchmark-list history-list">
+          ${historyItems}
+        </div>
+      </div>
+    `;
         }
 
         // Método para confirmar limpieza de historial
@@ -1732,6 +1736,1057 @@
             this.clearHistory();
           }
         }
+
+        // ===== MÉTODO PREMIUM PARA GENERAR PDF =====
+        generatePDFReport(analysisId) {
+          try {
+            const history = this.getHistory();
+            const analysisItem = history.find((item) => item.id === analysisId);
+
+            if (!analysisItem) {
+              this.showNotification(
+                "error",
+                "Error",
+                "Análisis no encontrado en el historial"
+              );
+              return;
+            }
+
+            this.showNotification(
+              "success",
+              "Generando PDF Premium",
+              "Creando informe completo con gráficos..."
+            );
+
+            // Crear documento PDF en formato A4
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF("p", "mm", "a4");
+            const results = analysisItem.results;
+
+            // Configuración de colores y estilos premium
+            const colors = {
+              primary: [249, 115, 22],
+              secondary: [234, 88, 12],
+              accent: [251, 146, 60],
+              success: [16, 185, 129],
+              warning: [245, 158, 11],
+              error: [239, 68, 68],
+              dark: [31, 41, 55],
+              gray: [107, 114, 128],
+              light: [248, 250, 252],
+              white: [255, 255, 255],
+            };
+
+            let currentY = 15;
+            const pageWidth = 210; // A4 width in mm
+            const pageHeight = 297; // A4 height in mm
+            const margin = 15;
+            const contentWidth = pageWidth - margin * 2;
+
+            // =================== PORTADA PREMIUM ===================
+            this.createPDFCover(
+              doc,
+              analysisItem,
+              colors,
+              margin,
+              contentWidth
+            );
+
+            // Nueva página para contenido
+            doc.addPage();
+            currentY = 20;
+
+            // =================== ÍNDICE ===================
+            currentY = this.createPDFIndex(doc, colors, margin, currentY);
+
+            // Nueva página para métricas
+            doc.addPage();
+            currentY = 20;
+
+            // =================== RESUMEN EJECUTIVO ===================
+            currentY = this.createExecutiveSummary(
+              doc,
+              results,
+              colors,
+              margin,
+              currentY,
+              contentWidth
+            );
+
+            // =================== MÉTRICAS PRINCIPALES ===================
+            currentY = this.createMainMetrics(
+              doc,
+              results,
+              colors,
+              margin,
+              currentY,
+              contentWidth
+            );
+
+            // Verificar espacio para nueva sección
+            if (currentY > 220) {
+              doc.addPage();
+              currentY = 20;
+            }
+
+            // =================== GRÁFICOS ===================
+            currentY = this.addChartsToPDF(
+              doc,
+              results,
+              colors,
+              margin,
+              currentY,
+              contentWidth
+            );
+
+            // =================== ANÁLISIS DETALLADO ===================
+            currentY = this.createDetailedAnalysis(
+              doc,
+              results,
+              colors,
+              margin,
+              currentY,
+              contentWidth
+            );
+
+            // =================== BENCHMARKS ===================
+            if (currentY > 200) {
+              doc.addPage();
+              currentY = 20;
+            }
+            currentY = this.createBenchmarkSection(
+              doc,
+              results,
+              colors,
+              margin,
+              currentY,
+              contentWidth
+            );
+
+            // =================== RECOMENDACIONES ===================
+            if (currentY > 200) {
+              doc.addPage();
+              currentY = 20;
+            }
+            currentY = this.createRecommendationsSection(
+              doc,
+              results,
+              colors,
+              margin,
+              currentY,
+              contentWidth
+            );
+
+            // =================== PIE DE PÁGINA EN TODAS LAS PÁGINAS ===================
+            this.addPageFooters(doc, colors, margin);
+
+            // =================== GUARDAR PDF ===================
+            const fileName = `MacPollo_Analytics_Premium_${analysisItem.date.replace(
+              /\s/g,
+              "_"
+            )}_${analysisItem.time.replace(":", "")}.pdf`;
+            doc.save(fileName);
+
+            this.showNotification(
+              "success",
+              "PDF Premium Generado",
+              `Informe completo descargado: ${fileName}`
+            );
+          } catch (error) {
+            console.error("Error generando PDF premium:", error);
+            this.showNotification(
+              "error",
+              "Error de Generación",
+              "No se pudo generar el informe premium. Intenta nuevamente."
+            );
+          }
+        }
+
+        // ===== FUNCIONES AUXILIARES PARA PDF PREMIUM =====
+
+        // Crear portada premium
+        createPDFCover(doc, analysisItem, colors, margin, contentWidth) {
+          const pageWidth = 210;
+          const pageHeight = 297;
+
+          // Fondo degradado simulado con rectángulos
+          doc.setFillColor(...colors.primary);
+          doc.rect(0, 0, pageWidth, 80, "F");
+
+          doc.setFillColor(249, 115, 22, 0.8);
+          doc.rect(0, 60, pageWidth, 40, "F");
+
+          doc.setFillColor(234, 88, 12, 0.6);
+          doc.rect(0, 80, pageWidth, 40, "F");
+
+          // Logo y título principal
+          doc.setTextColor(...colors.white);
+          doc.setFontSize(36);
+          doc.setFont("helvetica", "bold");
+          doc.text("🐔 MacPollo", pageWidth / 2, 35, { align: "center" });
+
+          doc.setFontSize(24);
+          doc.setFont("helvetica", "normal");
+          doc.text("ANALYTICS", pageWidth / 2, 50, { align: "center" });
+
+          doc.setFontSize(14);
+          doc.setTextColor(255, 255, 255, 0.9);
+          doc.text(
+            "Sistema de Análisis de Costos de Limpieza Industrial",
+            pageWidth / 2,
+            65,
+            { align: "center" }
+          );
+
+          // Información del reporte
+          doc.setFillColor(...colors.white);
+          doc.roundedRect(margin, 110, contentWidth, 60, 5, 5, "F");
+
+          doc.setTextColor(...colors.dark);
+          doc.setFontSize(18);
+          doc.setFont("helvetica", "bold");
+          doc.text("📊 INFORME DE ANÁLISIS PREMIUM", pageWidth / 2, 125, {
+            align: "center",
+          });
+
+          doc.setFontSize(12);
+          doc.setFont("helvetica", "normal");
+          doc.setTextColor(...colors.gray);
+
+          const reportInfo = [
+            `📅 Fecha del Análisis: ${analysisItem.date}`,
+            `⏰ Hora de Generación: ${analysisItem.time}`,
+            `🔢 ID del Análisis: ${analysisItem.id.substring(0, 20)}...`,
+            `📋 Kilos Procesados: ${analysisItem.results.kilosPollo.toLocaleString(
+              "es-CO"
+            )} kg`,
+            `💰 Inversión Total: ${formatCOP(analysisItem.results.costoTotal)}`,
+          ];
+
+          let infoY = 140;
+          reportInfo.forEach((info) => {
+            doc.text(info, pageWidth / 2, infoY, { align: "center" });
+            infoY += 6;
+          });
+
+          // Métricas destacadas en la portada
+          doc.setFillColor(...colors.light);
+          doc.roundedRect(margin, 190, contentWidth, 40, 5, 5, "F");
+
+          doc.setTextColor(...colors.primary);
+          doc.setFontSize(14);
+          doc.setFont("helvetica", "bold");
+          doc.text("🎯 RESULTADOS CLAVE", pageWidth / 2, 205, {
+            align: "center",
+          });
+
+          doc.setFontSize(10);
+          doc.setTextColor(...colors.dark);
+          doc.setFont("helvetica", "normal");
+
+          const keyMetrics = [
+            `Costo por Kg: ${formatCOP(
+              analysisItem.results.costoPorKilo
+            )} | Eficiencia: ${this.getEfficiencyLabel(
+              analysisItem.results.eficienciaCosto
+            )}`,
+            `Agua por Kg: ${analysisItem.results.litrosAguaPorKilo.toFixed(
+              1
+            )} L | Eficiencia: ${this.getEfficiencyLabel(
+              analysisItem.results.eficienciaAgua
+            )}`,
+          ];
+
+          let metricsY = 215;
+          keyMetrics.forEach((metric) => {
+            doc.text(metric, pageWidth / 2, metricsY, { align: "center" });
+            metricsY += 6;
+          });
+
+          // Footer de portada
+          doc.setTextColor(...colors.gray);
+          doc.setFontSize(8);
+          doc.text(
+            "Reporte generado automáticamente por MacPollo Analytics",
+            pageWidth / 2,
+            280,
+            { align: "center" }
+          );
+          doc.text(
+            `© 2025 MacPollo Analytics. Todos los derechos reservados.`,
+            pageWidth / 2,
+            287,
+            { align: "center" }
+          );
+        }
+
+        // Crear índice
+        createPDFIndex(doc, colors, margin, startY) {
+          doc.setTextColor(...colors.primary);
+          doc.setFontSize(20);
+          doc.setFont("helvetica", "bold");
+          doc.text("📋 ÍNDICE DEL INFORME", margin, startY);
+
+          startY += 15;
+
+          const indexItems = [
+            { title: "1. Resumen Ejecutivo", page: "3" },
+            { title: "2. Métricas Principales", page: "3" },
+            { title: "3. Análisis Gráfico", page: "4" },
+            { title: "4. Análisis Detallado", page: "5" },
+            { title: "5. Comparación con Benchmarks", page: "6" },
+            { title: "6. Recomendaciones Estratégicas", page: "7" },
+            { title: "Anexos y Referencias", page: "8" },
+          ];
+
+          doc.setFillColor(...colors.light);
+          doc.roundedRect(
+            margin,
+            startY,
+            180,
+            indexItems.length * 8 + 10,
+            3,
+            3,
+            "F"
+          );
+
+          startY += 8;
+
+          indexItems.forEach((item, index) => {
+            doc.setTextColor(...colors.dark);
+            doc.setFontSize(11);
+            doc.setFont("helvetica", "normal");
+            doc.text(`${item.title}`, margin + 5, startY);
+
+            // Línea punteada
+            const dots = ".".repeat(
+              Math.floor((140 - doc.getTextWidth(item.title)) / 2)
+            );
+            doc.setTextColor(...colors.gray);
+            doc.setFontSize(8);
+            doc.text(
+              dots,
+              margin + 5 + doc.getTextWidth(item.title) + 2,
+              startY
+            );
+
+            doc.setTextColor(...colors.primary);
+            doc.setFontSize(11);
+            doc.setFont("helvetica", "bold");
+            doc.text(item.page, margin + 165, startY);
+
+            startY += 8;
+          });
+
+          return startY + 20;
+        }
+
+        // Crear resumen ejecutivo
+        createExecutiveSummary(
+          doc,
+          results,
+          colors,
+          margin,
+          startY,
+          contentWidth
+        ) {
+          // Título de sección
+          this.createSectionHeader(
+            doc,
+            "📈 RESUMEN EJECUTIVO",
+            colors,
+            margin,
+            startY
+          );
+          startY += 15;
+
+          // Caja de resumen
+          doc.setFillColor(...colors.light);
+          doc.roundedRect(margin, startY, contentWidth, 35, 3, 3, "F");
+          doc.setDrawColor(...colors.primary);
+          doc.setLineWidth(0.5);
+          doc.roundedRect(margin, startY, contentWidth, 35, 3, 3, "S");
+
+          startY += 8;
+
+          doc.setTextColor(...colors.dark);
+          doc.setFontSize(11);
+          doc.setFont("helvetica", "normal");
+
+          const executiveSummary = [
+            `MacPollo procesó ${results.kilosPollo.toLocaleString(
+              "es-CO"
+            )} kg de pollo con una inversión total de ${formatCOP(
+              results.costoTotal
+            )}.`,
+            `El costo por kilogramo fue de ${formatCOP(
+              results.costoPorKilo
+            )}, clasificado como "${this.getEfficiencyLabel(
+              results.eficienciaCosto
+            )}".`,
+            `El consumo de agua fue de ${results.litrosAguaPorKilo.toFixed(
+              1
+            )} L/kg, clasificado como "${this.getEfficiencyLabel(
+              results.eficienciaAgua
+            )}".`,
+            `Los insumos químicos representan el ${results.porcentajeInsumos.toFixed(
+              1
+            )}% del costo total del proceso.`,
+          ];
+
+          executiveSummary.forEach((text) => {
+            const lines = doc.splitTextToSize(text, contentWidth - 10);
+            lines.forEach((line) => {
+              doc.text(line, margin + 5, startY);
+              startY += 5;
+            });
+            startY += 2;
+          });
+
+          return startY + 10;
+        }
+
+        // Crear métricas principales con diseño premium
+        createMainMetrics(doc, results, colors, margin, startY, contentWidth) {
+          this.createSectionHeader(
+            doc,
+            "📊 MÉTRICAS PRINCIPALES",
+            colors,
+            margin,
+            startY
+          );
+          startY += 15;
+
+          // Grid de métricas (2x2)
+          const metricWidth = (contentWidth - 10) / 2;
+          const metricHeight = 25;
+
+          const metrics = [
+            {
+              title: "Costo por Kilogramo",
+              value: formatCOP(results.costoPorKilo),
+              efficiency: results.eficienciaCosto,
+              icon: "💰",
+              x: margin,
+              y: startY,
+            },
+            {
+              title: "Agua por Kilogramo",
+              value: `${results.litrosAguaPorKilo.toFixed(1)} L`,
+              efficiency: results.eficienciaAgua,
+              icon: "💧",
+              x: margin + metricWidth + 5,
+              y: startY,
+            },
+            {
+              title: "Costo Total Proceso",
+              value: formatCOP(results.costoTotal),
+              efficiency: "good",
+              icon: "📊",
+              x: margin,
+              y: startY + metricHeight + 5,
+            },
+            {
+              title: "Volumen Total Agua",
+              value: `${results.aguaConsumida} m³`,
+              efficiency: "good",
+              icon: "🌊",
+              x: margin + metricWidth + 5,
+              y: startY + metricHeight + 5,
+            },
+          ];
+
+          metrics.forEach((metric) => {
+            // Fondo de métrica con color según eficiencia
+            let bgColor = colors.light;
+            if (metric.efficiency === "excellent") bgColor = [236, 253, 245];
+            else if (metric.efficiency === "good") bgColor = [254, 249, 195];
+            else if (metric.efficiency === "poor") bgColor = [254, 242, 242];
+
+            doc.setFillColor(...bgColor);
+            doc.roundedRect(
+              metric.x,
+              metric.y,
+              metricWidth,
+              metricHeight,
+              3,
+              3,
+              "F"
+            );
+
+            // Borde
+            doc.setDrawColor(...colors.primary);
+            doc.setLineWidth(0.3);
+            doc.roundedRect(
+              metric.x,
+              metric.y,
+              metricWidth,
+              metricHeight,
+              3,
+              3,
+              "S"
+            );
+
+            // Contenido
+            doc.setTextColor(...colors.primary);
+            doc.setFontSize(12);
+            doc.setFont("helvetica", "bold");
+            doc.text(
+              `${metric.icon} ${metric.title}`,
+              metric.x + 3,
+              metric.y + 6
+            );
+
+            doc.setTextColor(...colors.dark);
+            doc.setFontSize(14);
+            doc.setFont("helvetica", "bold");
+            doc.text(metric.value, metric.x + 3, metric.y + 14);
+
+            // Badge de eficiencia
+            if (metric.efficiency !== "good") {
+              const efficiencyLabel = this.getEfficiencyLabel(
+                metric.efficiency
+              );
+              doc.setFontSize(8);
+              doc.setFont("helvetica", "normal");
+
+              let badgeColor = colors.success;
+              if (metric.efficiency === "poor") badgeColor = colors.error;
+              else if (metric.efficiency === "regular")
+                badgeColor = colors.warning;
+
+              doc.setTextColor(...badgeColor);
+              doc.text(efficiencyLabel, metric.x + 3, metric.y + 21);
+            }
+          });
+
+          return startY + metricHeight * 2 + 20;
+        }
+
+        // Añadir gráficos al PDF
+        addChartsToPDF(doc, results, colors, margin, startY, contentWidth) {
+          this.createSectionHeader(
+            doc,
+            "📈 ANÁLISIS GRÁFICO",
+            colors,
+            margin,
+            startY
+          );
+          startY += 15;
+
+          try {
+            // Gráfico de distribución de costos (Pie Chart)
+            if (AppState.charts.pie) {
+              const pieCanvas = AppState.charts.pie.canvas;
+              const pieImgData = pieCanvas.toDataURL("image/png", 1.0);
+
+              doc.setFillColor(...colors.light);
+              doc.roundedRect(margin, startY, contentWidth, 60, 3, 3, "F");
+
+              doc.setTextColor(...colors.dark);
+              doc.setFontSize(12);
+              doc.setFont("helvetica", "bold");
+              doc.text("🍰 Distribución de Costos", margin + 5, startY + 8);
+
+              // Añadir imagen del gráfico
+              doc.addImage(pieImgData, "PNG", margin + 5, startY + 12, 80, 40);
+
+              // Leyenda del gráfico
+              doc.setFontSize(9);
+              doc.setFont("helvetica", "normal");
+              doc.setTextColor(...colors.gray);
+
+              const legendY = startY + 20;
+              doc.text(
+                `💧 Agua: ${formatCOP(
+                  results.costoTotalAgua
+                )} (${results.porcentajeAgua.toFixed(1)}%)`,
+                margin + 90,
+                legendY
+              );
+              doc.text(
+                `🧪 Insumos: ${formatCOP(
+                  results.costoInsumos
+                )} (${results.porcentajeInsumos.toFixed(1)}%)`,
+                margin + 90,
+                legendY + 8
+              );
+              doc.text(
+                `💰 Total: ${formatCOP(results.costoTotal)}`,
+                margin + 90,
+                legendY + 16
+              );
+
+              startY += 70;
+            }
+
+            // Nueva página si es necesario
+            if (startY > 200) {
+              doc.addPage();
+              startY = 20;
+            }
+
+            // Gráfico de comparación con benchmarks
+            if (AppState.charts.bar) {
+              const barCanvas = AppState.charts.bar.canvas;
+              const barImgData = barCanvas.toDataURL("image/png", 1.0);
+
+              doc.setFillColor(...colors.light);
+              doc.roundedRect(margin, startY, contentWidth, 70, 3, 3, "F");
+
+              doc.setTextColor(...colors.dark);
+              doc.setFontSize(12);
+              doc.setFont("helvetica", "bold");
+              doc.text(
+                "📊 Comparación vs Benchmarks de Industria",
+                margin + 5,
+                startY + 8
+              );
+
+              doc.addImage(
+                barImgData,
+                "PNG",
+                margin + 5,
+                startY + 12,
+                contentWidth - 10,
+                50
+              );
+
+              startY += 80;
+            }
+          } catch (error) {
+            console.error("Error añadiendo gráficos al PDF:", error);
+            // Continuar sin gráficos si hay error
+            doc.setTextColor(...colors.gray);
+            doc.setFontSize(10);
+            doc.text(
+              "(Gráficos no disponibles - asegúrate de generar los gráficos antes del PDF)",
+              margin,
+              startY
+            );
+            startY += 15;
+          }
+
+          return startY;
+        }
+
+        // Crear análisis detallado
+        createDetailedAnalysis(
+          doc,
+          results,
+          colors,
+          margin,
+          startY,
+          contentWidth
+        ) {
+          this.createSectionHeader(
+            doc,
+            "🔍 ANÁLISIS DETALLADO",
+            colors,
+            margin,
+            startY
+          );
+          startY += 15;
+
+          // Tabla de desglose de costos
+          startY = this.createPremiumTable(
+            doc,
+            [
+              ["Concepto", "Valor", "Porcentaje"],
+              [
+                "Costo de Agua",
+                formatCOP(results.costoTotalAgua),
+                `${results.porcentajeAgua.toFixed(1)}%`,
+              ],
+              [
+                "Insumos Químicos",
+                formatCOP(results.costoInsumos),
+                `${results.porcentajeInsumos.toFixed(1)}%`,
+              ],
+              ["TOTAL MACPOLLO", formatCOP(results.costoTotal), "100.0%"],
+            ],
+            colors,
+            margin,
+            startY,
+            contentWidth,
+            "💰 Desglose de Costos"
+          );
+
+          startY += 10;
+
+          // Análisis de eficiencia
+          const efficiencyAnalysis = this.generateEfficiencyAnalysis(results);
+
+          doc.setFillColor(...colors.light);
+          doc.roundedRect(margin, startY, contentWidth, 30, 3, 3, "F");
+
+          doc.setTextColor(...colors.primary);
+          doc.setFontSize(12);
+          doc.setFont("helvetica", "bold");
+          doc.text("⚡ Análisis de Eficiencia", margin + 5, startY + 8);
+
+          doc.setTextColor(...colors.dark);
+          doc.setFontSize(10);
+          doc.setFont("helvetica", "normal");
+
+          let analysisY = startY + 16;
+          efficiencyAnalysis.forEach((analysis) => {
+            const lines = doc.splitTextToSize(analysis, contentWidth - 10);
+            lines.forEach((line) => {
+              doc.text(line, margin + 5, analysisY);
+              analysisY += 4;
+            });
+          });
+
+          return analysisY + 10;
+        }
+
+        // Crear sección de benchmarks
+        createBenchmarkSection(
+          doc,
+          results,
+          colors,
+          margin,
+          startY,
+          contentWidth
+        ) {
+          this.createSectionHeader(
+            doc,
+            "🎯 COMPARACIÓN CON BENCHMARKS",
+            colors,
+            margin,
+            startY
+          );
+          startY += 15;
+
+          return this.createPremiumTable(
+            doc,
+            [
+              [
+                "Indicador",
+                "Óptimo",
+                "Promedio Industria",
+                "MacPollo",
+                "Estado",
+              ],
+              [
+                "Costo por kg",
+                formatCOP(results.benchmarks.costoPorKiloOptimo),
+                formatCOP(results.benchmarks.costoPorKiloPromedio),
+                formatCOP(results.costoPorKilo),
+                this.getEfficiencyLabel(results.eficienciaCosto),
+              ],
+              [
+                "Agua por kg",
+                `${results.benchmarks.aguaPorKiloOptimo} L`,
+                `${results.benchmarks.aguaPorKiloPromedio} L`,
+                `${results.litrosAguaPorKilo.toFixed(1)} L`,
+                this.getEfficiencyLabel(results.eficienciaAgua),
+              ],
+            ],
+            colors,
+            margin,
+            startY,
+            contentWidth,
+            "📋 Comparación Detallada"
+          );
+        }
+
+        // Crear sección de recomendaciones
+        createRecommendationsSection(
+          doc,
+          results,
+          colors,
+          margin,
+          startY,
+          contentWidth
+        ) {
+          this.createSectionHeader(
+            doc,
+            "💡 RECOMENDACIONES ESTRATÉGICAS",
+            colors,
+            margin,
+            startY
+          );
+          startY += 15;
+
+          const recommendations = this.generateRecommendationsForPDF(results);
+
+          recommendations.forEach((rec, index) => {
+            // Verificar espacio
+            if (startY > 240) {
+              doc.addPage();
+              startY = 20;
+            }
+
+            // Caja de recomendación
+            let bgColor = colors.light;
+            let iconColor = colors.primary;
+
+            if (
+              rec.title.includes("Crítica") ||
+              rec.title.includes("Oportunidad")
+            ) {
+              bgColor = [254, 242, 242];
+              iconColor = colors.error;
+            } else if (
+              rec.title.includes("Excelencia") ||
+              rec.title.includes("Optimizado")
+            ) {
+              bgColor = [236, 253, 245];
+              iconColor = colors.success;
+            }
+
+            doc.setFillColor(...bgColor);
+            doc.roundedRect(margin, startY, contentWidth, 20, 3, 3, "F");
+
+            doc.setDrawColor(...iconColor);
+            doc.setLineWidth(0.5);
+            doc.roundedRect(margin, startY, contentWidth, 20, 3, 3, "S");
+
+            // Contenido
+            doc.setTextColor(...iconColor);
+            doc.setFontSize(11);
+            doc.setFont("helvetica", "bold");
+            doc.text(`${index + 1}. ${rec.title}`, margin + 3, startY + 7);
+
+            doc.setTextColor(...colors.dark);
+            doc.setFontSize(9);
+            doc.setFont("helvetica", "normal");
+
+            const descLines = doc.splitTextToSize(
+              rec.description,
+              contentWidth - 6
+            );
+            let descY = startY + 13;
+            descLines.forEach((line) => {
+              doc.text(line, margin + 3, descY);
+              descY += 4;
+            });
+
+            startY += 25;
+          });
+
+          return startY;
+        }
+
+        // Crear encabezado de sección premium
+        createSectionHeader(doc, title, colors, margin, y) {
+          doc.setFillColor(...colors.primary);
+          doc.rect(margin, y, 180, 8, "F");
+
+          doc.setTextColor(...colors.white);
+          doc.setFontSize(14);
+          doc.setFont("helvetica", "bold");
+          doc.text(title, margin + 3, y + 6);
+        }
+
+        // Crear tabla premium
+        createPremiumTable(
+          doc,
+          data,
+          colors,
+          margin,
+          startY,
+          contentWidth,
+          title = ""
+        ) {
+          if (title) {
+            doc.setTextColor(...colors.primary);
+            doc.setFontSize(12);
+            doc.setFont("helvetica", "bold");
+            doc.text(title, margin, startY);
+            startY += 8;
+          }
+
+          const rowHeight = 6;
+          const colWidth = contentWidth / data[0].length;
+
+          data.forEach((row, rowIndex) => {
+            row.forEach((cell, colIndex) => {
+              const cellX = margin + colIndex * colWidth;
+              const cellY = startY + rowIndex * rowHeight;
+
+              // Fondo
+              if (rowIndex === 0) {
+                doc.setFillColor(...colors.primary);
+                doc.rect(cellX, cellY, colWidth, rowHeight, "F");
+                doc.setTextColor(...colors.white);
+                doc.setFontSize(9);
+                doc.setFont("helvetica", "bold");
+              } else {
+                if (rowIndex % 2 === 0) {
+                  doc.setFillColor(248, 250, 252);
+                  doc.rect(cellX, cellY, colWidth, rowHeight, "F");
+                }
+                doc.setTextColor(...colors.dark);
+                doc.setFontSize(8);
+                doc.setFont("helvetica", "normal");
+              }
+
+              // Bordes
+              doc.setDrawColor(...colors.gray);
+              doc.setLineWidth(0.2);
+              doc.rect(cellX, cellY, colWidth, rowHeight);
+
+              // Texto
+              doc.text(cell.toString(), cellX + 1, cellY + 4);
+            });
+          });
+
+          return startY + data.length * rowHeight + 10;
+        }
+
+        // Añadir pie de página a todas las páginas
+        addPageFooters(doc, colors, margin) {
+          const pageCount = doc.getNumberOfPages();
+
+          for (let i = 1; i <= pageCount; i++) {
+            doc.setPage(i);
+
+            // Línea divisoria
+            doc.setDrawColor(...colors.gray);
+            doc.setLineWidth(0.3);
+            doc.line(margin, 280, 210 - margin, 280);
+
+            // Texto del pie
+            doc.setTextColor(...colors.gray);
+            doc.setFontSize(8);
+            doc.setFont("helvetica", "normal");
+
+            doc.text(
+              "MacPollo Analytics - Sistema de Análisis de Costos de Limpieza Industrial",
+              margin,
+              285
+            );
+            doc.text(`Página ${i} de ${pageCount}`, 210 - margin, 285, {
+              align: "right",
+            });
+            doc.text(
+              `Generado el ${new Date().toLocaleDateString(
+                "es-CO"
+              )} - © 2025 MacPollo Analytics`,
+              margin,
+              290
+            );
+          }
+        }
+
+        // Generar análisis de eficiencia para PDF
+        generateEfficiencyAnalysis(results) {
+          let analysis = [];
+
+          if (results.ahorroVsPromedio > 0) {
+            analysis.push(
+              `✅ EXCELENTE: MacPollo opera ${results.ahorroVsPromedio.toFixed(
+                1
+              )}% más eficientemente que el promedio de la industria.`
+            );
+          } else {
+            analysis.push(
+              `⚠️ OPORTUNIDAD: MacPollo tiene un costo ${Math.abs(
+                results.ahorroVsPromedio
+              ).toFixed(1)}% mayor que el promedio de la industria.`
+            );
+          }
+
+          if (results.litrosAguaPorKilo <= 20) {
+            analysis.push(
+              `💧 Uso de agua ÓPTIMO: ${results.litrosAguaPorKilo.toFixed(
+                1
+              )} L/kg está dentro del rango ideal (≤20 L/kg).`
+            );
+          } else if (results.litrosAguaPorKilo <= 30) {
+            analysis.push(
+              `💧 Uso de agua BUENO: ${results.litrosAguaPorKilo.toFixed(
+                1
+              )} L/kg está en rango aceptable (20-30 L/kg).`
+            );
+          } else {
+            analysis.push(
+              `💧 Uso de agua MEJORABLE: ${results.litrosAguaPorKilo.toFixed(
+                1
+              )} L/kg supera los estándares recomendados (>30 L/kg).`
+            );
+          }
+
+          analysis.push(
+            `💰 Distribución de costos: Agua ${results.porcentajeAgua.toFixed(
+              1
+            )}% | Insumos ${results.porcentajeInsumos.toFixed(1)}%`
+          );
+
+          return analysis;
+        }
+
+        // Método auxiliar para generar recomendaciones para PDF
+        generateRecommendationsForPDF(results) {
+          let recommendations = [];
+
+          if (results.litrosAguaPorKilo > 35) {
+            recommendations.push({
+              title: "Optimización Crítica de Agua",
+              description:
+                "Se recomienda implementar urgentemente sistemas de recirculación de agua o tecnologías de limpieza más eficientes para reducir el consumo por debajo de 30 L/kg.",
+            });
+          } else if (results.litrosAguaPorKilo > 25) {
+            recommendations.push({
+              title: "Mejora del Uso de Agua",
+              description:
+                "Evaluar la implementación de sistemas de ahorro de agua más eficientes. Considerar tecnologías de atomización o limpieza a alta presión.",
+            });
+          }
+
+          if (
+            results.costoPorKilo > AppConfig.benchmarks.costoPorKiloPromedio
+          ) {
+            recommendations.push({
+              title: "Optimización de Costos",
+              description:
+                "Analizar proveedores alternativos para insumos químicos y evaluar la optimización de procesos de limpieza para reducir costos operativos.",
+            });
+          }
+
+          if (results.porcentajeInsumos > 70) {
+            recommendations.push({
+              title: "Análisis de Insumos Químicos",
+              description: `Los insumos representan ${results.porcentajeInsumos.toFixed(
+                1
+              )}% del costo total. Evaluar concentraciones y eficiencia de productos utilizados.`,
+            });
+          }
+
+          if (results.ahorroVsPromedio > 10) {
+            recommendations.push({
+              title: "Excelencia Operativa",
+              description:
+                "MacPollo está operando significativamente por encima de los estándares de la industria. Considerar documentar y replicar estas mejores prácticas.",
+            });
+          }
+
+          if (
+            results.eficienciaAgua === "excellent" &&
+            results.eficienciaCosto === "excellent"
+          ) {
+            recommendations.push({
+              title: "Proceso Altamente Optimizado",
+              description:
+                "El proceso actual muestra excelencia en ambas métricas clave. Mantener estos estándares y considerar auditorías periódicas.",
+            });
+          }
+
+          if (recommendations.length === 0) {
+            recommendations.push({
+              title: "Proceso Eficiente",
+              description:
+                "MacPollo muestra indicadores de eficiencia satisfactorios. Continuar con el monitoreo regular y mantener los estándares actuales.",
+            });
+          }
+
+          return recommendations;
+        }
+
+        // ===== RESTO DE LOS MÉTODOS ORIGINALES =====
 
         // Validación de campos
         validateField(input) {
@@ -1990,29 +3045,29 @@
           const content = document.getElementById("resultsContent");
 
           const html = `
-                    <div class="results-tabs">
-                        <button class="tab-button active" data-tab="metrics">📊 Métricas</button>
-                        <button class="tab-button" data-tab="charts">📈 Gráficos</button>
-                        <button class="tab-button" data-tab="analysis">🔍 Análisis</button>
-                        <button class="tab-button" data-tab="history">🕒 Historial</button>
-                    </div>
+      <div class="results-tabs">
+        <button class="tab-button active" data-tab="metrics">📊 Métricas</button>
+        <button class="tab-button" data-tab="charts">📈 Gráficos</button>
+        <button class="tab-button" data-tab="analysis">🔍 Análisis</button>
+        <button class="tab-button" data-tab="history">🕒 Historial</button>
+      </div>
 
-                    <div class="tab-content active" id="tab-metrics">
-                        ${this.renderMetricsTab(results)}
-                    </div>
+      <div class="tab-content active" id="tab-metrics">
+        ${this.renderMetricsTab(results)}
+      </div>
 
-                    <div class="tab-content" id="tab-charts">
-                        ${this.renderChartsTab(results)}
-                    </div>
+      <div class="tab-content" id="tab-charts">
+        ${this.renderChartsTab(results)}
+      </div>
 
-                    <div class="tab-content" id="tab-analysis">
-                        ${this.renderAnalysisTab(results)}
-                    </div>
+      <div class="tab-content" id="tab-analysis">
+        ${this.renderAnalysisTab(results)}
+      </div>
 
-                    <div class="tab-content" id="tab-history">
-                        ${this.renderHistoryTab()}
-                    </div>
-                `;
+      <div class="tab-content" id="tab-history">
+        ${this.renderHistoryTab()}
+      </div>
+    `;
 
           content.innerHTML = html;
           this.setupTabs();
@@ -2023,240 +3078,222 @@
 
         renderMetricsTab(results) {
           return `
-                    <div class="metrics-grid">
-                        <div class="metric-card">
-                            <div class="metric-header">
-                                <span class="metric-icon">💰</span>
-                                <span class="metric-label">Costo por Kilogramo</span>
-                            </div>
-                            <div class="metric-value">${formatCOP(
-                              results.costoPorKilo
-                            )}</div>
-                            <div class="metric-description">Costo total del proceso dividido entre kilos procesados</div>
-                            <div class="metric-badge badge-${
-                              results.eficienciaCosto
-                            }">
-                                ${this.getEfficiencyLabel(
-                                  results.eficienciaCosto
-                                )}
-                            </div>
-                        </div>
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="metric-header">
+            <span class="metric-icon">💰</span>
+            <span class="metric-label">Costo por Kilogramo</span>
+          </div>
+          <div class="metric-value">${formatCOP(results.costoPorKilo)}</div>
+          <div class="metric-description">Costo total del proceso dividido entre kilos procesados</div>
+          <div class="metric-badge badge-${results.eficienciaCosto}">
+            ${this.getEfficiencyLabel(results.eficienciaCosto)}
+          </div>
+        </div>
 
-                        <div class="metric-card">
-                            <div class="metric-header">
-                                <span class="metric-icon">💧</span>
-                                <span class="metric-label">Agua por Kilogramo</span>
-                            </div>
-                            <div class="metric-value">${results.litrosAguaPorKilo.toFixed(
-                              1
-                            )} L</div>
-                            <div class="metric-description">Litros de agua consumidos por kilogramo de pollo</div>
-                            <div class="metric-badge badge-${
-                              results.eficienciaAgua
-                            }">
-                                ${this.getEfficiencyLabel(
-                                  results.eficienciaAgua
-                                )}
-                            </div>
-                        </div>
-
-                        <div class="metric-card">
-                            <div class="metric-header">
-                                <span class="metric-icon">📊</span>
-                                <span class="metric-label">Costo Total</span>
-                            </div>
-                            <div class="metric-value">${formatCOP(
-                              results.costoTotal
-                            )}</div>
-                            <div class="metric-description">Inversión total para procesar ${results.kilosPollo.toLocaleString(
-                              "es-CO"
-                            )} kg</div>
-                        </div>
-
-                        <div class="metric-card">
-                            <div class="metric-header">
-                                <span class="metric-icon">🌊</span>
-                                <span class="metric-label">Volumen de Agua</span>
-                            </div>
-                            <div class="metric-value">${
-                              results.aguaConsumida
-                            } m³</div>
-                            <div class="metric-description">Metros cúbicos totales consumidos</div>
-                        </div>
-                    </div>
-
-                    <div class="analysis-section">
-                        <div class="analysis-header">
-                            <span>💼</span>
-                            <h3 class="analysis-title">Desglose de Costos</h3>
-                        </div>
-                        <div class="benchmark-list">
-                            <div class="benchmark-item">
-                                <span class="benchmark-label">💧 Agua (${
-                                  results.aguaConsumida
-                                } m³)</span>
-                                <span class="benchmark-value">${formatCOP(
-                                  results.costoTotalAgua
-                                )} (${results.porcentajeAgua.toFixed(
+        <div class="metric-card">
+          <div class="metric-header">
+            <span class="metric-icon">💧</span>
+            <span class="metric-label">Agua por Kilogramo</span>
+          </div>
+          <div class="metric-value">${results.litrosAguaPorKilo.toFixed(
             1
-          )}%)</span>
-                            </div>
-                            <div class="benchmark-item">
-                                <span class="benchmark-label">🧪 Insumos Químicos</span>
-                                <span class="benchmark-value">${formatCOP(
-                                  results.costoInsumos
-                                )} (${results.porcentajeInsumos.toFixed(
-            1
-          )}%)</span>
-                            </div>
-                            <div class="benchmark-item benchmark-highlight">
-                                <span class="benchmark-label"><strong>💰 TOTAL MacPollo</strong></span>
-                                <span class="benchmark-value"><strong>${formatCOP(
-                                  results.costoTotal
-                                )}</strong></span>
-                            </div>
-                        </div>
-                    </div>
-                `;
+          )} L</div>
+          <div class="metric-description">Litros de agua consumidos por kilogramo de pollo</div>
+          <div class="metric-badge badge-${results.eficienciaAgua}">
+            ${this.getEfficiencyLabel(results.eficienciaAgua)}
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-header">
+            <span class="metric-icon">📊</span>
+            <span class="metric-label">Costo Total</span>
+          </div>
+          <div class="metric-value">${formatCOP(results.costoTotal)}</div>
+          <div class="metric-description">Inversión total para procesar ${results.kilosPollo.toLocaleString(
+            "es-CO"
+          )} kg</div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-header">
+            <span class="metric-icon">🌊</span>
+            <span class="metric-label">Volumen de Agua</span>
+          </div>
+          <div class="metric-value">${results.aguaConsumida} m³</div>
+          <div class="metric-description">Metros cúbicos totales consumidos</div>
+        </div>
+      </div>
+
+      <div class="analysis-section">
+        <div class="analysis-header">
+          <span>💼</span>
+          <h3 class="analysis-title">Desglose de Costos</h3>
+        </div>
+        <div class="benchmark-list">
+          <div class="benchmark-item">
+            <span class="benchmark-label">💧 Agua (${
+              results.aguaConsumida
+            } m³)</span>
+            <span class="benchmark-value">${formatCOP(
+              results.costoTotalAgua
+            )} (${results.porcentajeAgua.toFixed(1)}%)</span>
+          </div>
+          <div class="benchmark-item">
+            <span class="benchmark-label">🧪 Insumos Químicos</span>
+            <span class="benchmark-value">${formatCOP(
+              results.costoInsumos
+            )} (${results.porcentajeInsumos.toFixed(1)}%)</span>
+          </div>
+          <div class="benchmark-item benchmark-highlight">
+            <span class="benchmark-label"><strong>💰 TOTAL MacPollo</strong></span>
+            <span class="benchmark-value"><strong>${formatCOP(
+              results.costoTotal
+            )}</strong></span>
+          </div>
+        </div>
+      </div>
+    `;
         }
 
         renderChartsTab(results) {
           return `
-                    <div class="charts-grid">
-                        <div class="chart-container">
-                            <div class="chart-header">
-                                <span>🍰</span>
-                                <h3 class="chart-title">Distribución de Costos</h3>
-                            </div>
-                            <div class="chart-wrapper">
-                                <canvas id="pieChart"></canvas>
-                            </div>
-                        </div>
+      <div class="charts-grid">
+        <div class="chart-container">
+          <div class="chart-header">
+            <span>🍰</span>
+            <h3 class="chart-title">Distribución de Costos</h3>
+          </div>
+          <div class="chart-wrapper">
+            <canvas id="pieChart"></canvas>
+          </div>
+        </div>
 
-                        <div class="chart-container">
-                            <div class="chart-header">
-                                <span>📊</span>
-                                <h3 class="chart-title">Comparativa vs Benchmarks</h3>
-                            </div>
-                            <div class="chart-wrapper">
-                                <canvas id="barChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
+        <div class="chart-container">
+          <div class="chart-header">
+            <span>📊</span>
+            <h3 class="chart-title">Comparativa vs Benchmarks</h3>
+          </div>
+          <div class="chart-wrapper">
+            <canvas id="barChart"></canvas>
+          </div>
+        </div>
+      </div>
 
-                    <div class="chart-container">
-                        <div class="chart-header">
-                            <span>📈</span>
-                            <h3 class="chart-title">Análisis de Eficiencia MacPollo</h3>
-                        </div>
-                        <div class="chart-wrapper" style="height: 250px;">
-                            <canvas id="efficiencyChart"></canvas>
-                        </div>
-                    </div>
-                `;
+      <div class="chart-container">
+        <div class="chart-header">
+          <span>📈</span>
+          <h3 class="chart-title">Análisis de Eficiencia MacPollo</h3>
+        </div>
+        <div class="chart-wrapper" style="height: 250px;">
+          <canvas id="efficiencyChart"></canvas>
+        </div>
+      </div>
+    `;
         }
 
         renderAnalysisTab(results) {
           return `
-                    <div class="analysis-section">
-                        <div class="analysis-header">
-                            <span>🎯</span>
-                            <h3 class="analysis-title">Benchmarks de Industria Avícola</h3>
-                        </div>
-                        <div class="benchmark-list">
-                            <div class="benchmark-item">
-                                <span class="benchmark-label">Costo Óptimo por Kg</span>
-                                <span class="benchmark-value">${formatCOP(
-                                  results.benchmarks.costoPorKiloOptimo
-                                )}</span>
-                            </div>
-                            <div class="benchmark-item">
-                                <span class="benchmark-label">Costo Promedio por Kg</span>
-                                <span class="benchmark-value">${formatCOP(
-                                  results.benchmarks.costoPorKiloPromedio
-                                )}</span>
-                            </div>
-                            <div class="benchmark-item benchmark-highlight">
-                                <span class="benchmark-label">Costo MacPollo por Kg</span>
-                                <span class="benchmark-value">${formatCOP(
-                                  results.costoPorKilo
-                                )}</span>
-                            </div>
-                            ${
-                              results.ahorroVsPromedio > 0
-                                ? `
-                                <div class="benchmark-item" style="border-color: var(--success-500); background: var(--success-50);">
-                                    <span class="benchmark-label">✅ Ahorro vs Promedio</span>
-                                    <span class="benchmark-value" style="color: var(--success-600);">${results.ahorroVsPromedio.toFixed(
-                                      1
-                                    )}% menos</span>
-                                </div>
-                            `
-                                : `
-                                <div class="benchmark-item" style="border-color: var(--error-500); background: var(--error-50);">
-                                    <span class="benchmark-label">⚠️ Diferencia vs Promedio</span>
-                                    <span class="benchmark-value" style="color: var(--error-600);">${Math.abs(
-                                      results.ahorroVsPromedio
-                                    ).toFixed(1)}% más</span>
-                                </div>
-                            `
-                            }
-                        </div>
-                    </div>
+      <div class="analysis-section">
+        <div class="analysis-header">
+          <span>🎯</span>
+          <h3 class="analysis-title">Benchmarks de Industria Avícola</h3>
+        </div>
+        <div class="benchmark-list">
+          <div class="benchmark-item">
+            <span class="benchmark-label">Costo Óptimo por Kg</span>
+            <span class="benchmark-value">${formatCOP(
+              results.benchmarks.costoPorKiloOptimo
+            )}</span>
+          </div>
+          <div class="benchmark-item">
+            <span class="benchmark-label">Costo Promedio por Kg</span>
+            <span class="benchmark-value">${formatCOP(
+              results.benchmarks.costoPorKiloPromedio
+            )}</span>
+          </div>
+          <div class="benchmark-item benchmark-highlight">
+            <span class="benchmark-label">Costo MacPollo por Kg</span>
+            <span class="benchmark-value">${formatCOP(
+              results.costoPorKilo
+            )}</span>
+          </div>
+          ${
+            results.ahorroVsPromedio > 0
+              ? `
+              <div class="benchmark-item" style="border-color: var(--success-500); background: var(--success-50);">
+                <span class="benchmark-label">✅ Ahorro vs Promedio</span>
+                <span class="benchmark-value" style="color: var(--success-600);">${results.ahorroVsPromedio.toFixed(
+                  1
+                )}% menos</span>
+              </div>
+            `
+              : `
+              <div class="benchmark-item" style="border-color: var(--error-500); background: var(--error-50);">
+                <span class="benchmark-label">⚠️ Diferencia vs Promedio</span>
+                <span class="benchmark-value" style="color: var(--error-600);">${Math.abs(
+                  results.ahorroVsPromedio
+                ).toFixed(1)}% más</span>
+              </div>
+            `
+          }
+        </div>
+      </div>
 
-                    <div class="analysis-section">
-                        <div class="analysis-header">
-                            <span>🔍</span>
-                            <h3 class="analysis-title">Análisis de Eficiencia de Agua</h3>
-                        </div>
-                        <div class="benchmark-list">
-                            <div class="benchmark-item">
-                                <span class="benchmark-label">Uso Óptimo de Agua</span>
-                                <span class="benchmark-value">${
-                                  results.benchmarks.aguaPorKiloOptimo
-                                } L/kg</span>
-                            </div>
-                            <div class="benchmark-item">
-                                <span class="benchmark-label">Uso Promedio de Agua</span>
-                                <span class="benchmark-value">${
-                                  results.benchmarks.aguaPorKiloPromedio
-                                } L/kg</span>
-                            </div>
-                            <div class="benchmark-item benchmark-highlight">
-                                <span class="benchmark-label">Uso MacPollo</span>
-                                <span class="benchmark-value">${results.litrosAguaPorKilo.toFixed(
-                                  1
-                                )} L/kg</span>
-                            </div>
-                        </div>
-                    </div>
+      <div class="analysis-section">
+        <div class="analysis-header">
+          <span>🔍</span>
+          <h3 class="analysis-title">Análisis de Eficiencia de Agua</h3>
+        </div>
+        <div class="benchmark-list">
+          <div class="benchmark-item">
+            <span class="benchmark-label">Uso Óptimo de Agua</span>
+            <span class="benchmark-value">${
+              results.benchmarks.aguaPorKiloOptimo
+            } L/kg</span>
+          </div>
+          <div class="benchmark-item">
+            <span class="benchmark-label">Uso Promedio de Agua</span>
+            <span class="benchmark-value">${
+              results.benchmarks.aguaPorKiloPromedio
+            } L/kg</span>
+          </div>
+          <div class="benchmark-item benchmark-highlight">
+            <span class="benchmark-label">Uso MacPollo</span>
+            <span class="benchmark-value">${results.litrosAguaPorKilo.toFixed(
+              1
+            )} L/kg</span>
+          </div>
+        </div>
+      </div>
 
-                    ${
-                      results.detalleInsumos
-                        ? `
-                        <div class="analysis-section">
-                            <div class="analysis-header">
-                                <span>🧪</span>
-                                <h3 class="analysis-title">Detalle de Insumos MacPollo</h3>
-                            </div>
-                            <div style="background: var(--surface-secondary); padding: var(--space-4); border-radius: var(--radius); color: var(--text-secondary); line-height: 1.6; border: 1px solid var(--border);">
-                                ${results.detalleInsumos}
-                            </div>
-                        </div>
-                    `
-                        : ""
-                    }
+      ${
+        results.detalleInsumos
+          ? `
+          <div class="analysis-section">
+            <div class="analysis-header">
+              <span>🧪</span>
+              <h3 class="analysis-title">Detalle de Insumos MacPollo</h3>
+            </div>
+            <div style="background: var(--surface-secondary); padding: var(--space-4); border-radius: var(--radius); color: var(--text-secondary); line-height: 1.6; border: 1px solid var(--border);">
+              ${results.detalleInsumos}
+            </div>
+          </div>
+        `
+          : ""
+      }
 
-                    <div class="analysis-section">
-                        <div class="analysis-header">
-                            <span>💡</span>
-                            <h3 class="analysis-title">Recomendaciones para MacPollo</h3>
-                        </div>
-                        <div class="benchmark-list">
-                            ${this.generateRecommendations(results)}
-                        </div>
-                    </div>
-                `;
+      <div class="analysis-section">
+        <div class="analysis-header">
+          <span>💡</span>
+          <h3 class="analysis-title">Recomendaciones para MacPollo</h3>
+        </div>
+        <div class="benchmark-list">
+          ${this.generateRecommendations(results)}
+        </div>
+      </div>
+    `;
         }
 
         generateRecommendations(results) {
@@ -2320,17 +3357,13 @@
           return recommendations
             .map(
               (rec) => `
-                    <div class="benchmark-item">
-                        <span class="benchmark-label">${
-                          rec.type === "success"
-                            ? "✅"
-                            : rec.type === "warning"
-                            ? "⚠️"
-                            : "ℹ️"
-                        } ${rec.title}</span>
-                        <span class="benchmark-value">${rec.description}</span>
-                    </div>
-                `
+        <div class="benchmark-item">
+          <span class="benchmark-label">${
+            rec.type === "success" ? "✅" : rec.type === "warning" ? "⚠️" : "ℹ️"
+          } ${rec.title}</span>
+          <span class="benchmark-value">${rec.description}</span>
+        </div>
+      `
             )
             .join("");
         }
@@ -2602,12 +3635,12 @@
 
           // Limpiar resultados
           document.getElementById("resultsContent").innerHTML = `
-                    <div class="results-empty">
-                        <div class="results-empty-icon">📊</div>
-                        <div class="results-empty-title">Sin datos que mostrar</div>
-                        <div class="results-empty-text">Ingresa los datos del proceso para ver el análisis completo con métricas, gráficos y recomendaciones específicas para MacPollo</div>
-                    </div>
-                `;
+      <div class="results-empty">
+        <div class="results-empty-icon">📊</div>
+        <div class="results-empty-title">Sin datos que mostrar</div>
+        <div class="results-empty-text">Ingresa los datos del proceso para ver el análisis completo con métricas, gráficos y recomendaciones específicas para MacPollo</div>
+      </div>
+    `;
 
           this.destroyCharts();
           AppState.currentResults = null;
@@ -2627,12 +3660,12 @@
             type === "success" ? "✅" : type === "error" ? "❌" : "ℹ️";
 
           notification.innerHTML = `
-                    <div class="notification-icon">${icon}</div>
-                    <div class="notification-content">
-                        <div class="notification-title">${title}</div>
-                        <div class="notification-message">${message}</div>
-                    </div>
-                `;
+      <div class="notification-icon">${icon}</div>
+      <div class="notification-content">
+        <div class="notification-title">${title}</div>
+        <div class="notification-message">${message}</div>
+      </div>
+    `;
 
           document.body.appendChild(notification);
 
@@ -2669,6 +3702,6 @@
         window.app = new MacPolloAnalytics();
       }
     </script>
-     <script src="security.js"></script>
+    <script src="security.js"></script>
   </body>
 </html>
